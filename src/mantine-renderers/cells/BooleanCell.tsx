@@ -22,37 +22,28 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React from 'react';
-import {
-  CellProps,
-  isBooleanControl,
-  RankedTester,
-  rankWith,
-} from '@jsonforms/core';
+import type { CellProps, RankedTester } from '@jsonforms/core';
+import { isBooleanControl, rankWith } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
-import type { VanillaRendererProps } from '../index';
-import { withVanillaBooleanCellProps } from '../util/index';
+import { Checkbox } from '@mantine/core';
 
-export const BooleanCell = (props: CellProps & VanillaRendererProps) => {
-  const { data, className, id, enabled, uischema, path, handleChange } = props;
+export const BooleanCell = (props: CellProps) => {
+  const { data, id, enabled, path, handleChange } = props;
+
+  if (props.visible === false) {
+    return null;
+  }
 
   return (
-    <input
-      type='checkbox'
-      checked={!!data}
-      onChange={(ev) => handleChange(path, ev.target.checked)}
-      className={className}
+    <Checkbox
       id={id}
+      checked={!!data}
+      onChange={(event) => handleChange(path, event.currentTarget.checked)}
       disabled={!enabled}
-      autoFocus={uischema.options && uischema.options.focus}
     />
   );
 };
 
-/**
- * Default tester for boolean controls.
- * @type {RankedTester}
- */
 export const booleanCellTester: RankedTester = rankWith(2, isBooleanControl);
 
-export default withJsonFormsCellProps(withVanillaBooleanCellProps(BooleanCell));
+export default withJsonFormsCellProps(BooleanCell);

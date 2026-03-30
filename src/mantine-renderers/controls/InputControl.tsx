@@ -23,15 +23,11 @@
   THE SOFTWARE.
 */
 import maxBy from 'lodash/maxBy';
-import React from 'react';
+import type { ControlProps, ControlState, RankedTester } from '@jsonforms/core';
 import {
   computeLabel,
-  ControlProps,
-  ControlState,
   isControl,
-  isDescriptionHidden,
   NOT_APPLICABLE,
-  RankedTester,
   rankWith,
 } from '@jsonforms/core';
 import {
@@ -39,17 +35,12 @@ import {
   DispatchCell,
   withJsonFormsControlProps,
 } from '@jsonforms/react';
-import { withVanillaControlProps } from '../util';
-import type { VanillaRendererProps } from '../index';
+import { Input } from '@mantine/core';
 import merge from 'lodash/merge';
 
-export class InputControl extends Control<
-  ControlProps & VanillaRendererProps,
-  ControlState
-> {
+export class InputControl extends Control<ControlProps, ControlState> {
   render() {
     const {
-      classNames,
       description,
       id,
       errors,
@@ -66,61 +57,63 @@ export class InputControl extends Control<
     } = this.props;
 
     const isValid = errors.length === 0;
-
-    const divClassNames = [classNames.validation]
-      .concat(isValid ? classNames.description : classNames.validationError)
-      .join(' ');
-
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
-    const showDescription = !isDescriptionHidden(
+    const showDescription = !this.isDescriptionHidden(
       visible,
       description,
       this.state.isFocused,
       appliedUiSchemaOptions.showUnfocusedDescription
     );
-    const testerContext = {
-      rootSchema: rootSchema,
-      config: config,
-    };
+    const testerContext = { rootSchema, config };
     const cell = maxBy(cells, (r) => r.tester(uischema, schema, testerContext));
+
     if (
       cell === undefined ||
       cell.tester(uischema, schema, testerContext) === NOT_APPLICABLE
     ) {
       console.warn('No applicable cell found.', uischema, schema);
       return null;
-    } else {
-      return (
-        <div
-          className={classNames.wrapper}
-          hidden={!visible}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
-          id={id}
-        >
-          <label htmlFor={id + '-input'} className={classNames.label}>
-            {computeLabel(
-              label,
-              required,
-              appliedUiSchemaOptions.hideRequiredAsterisk
-            )}
-          </label>
-          <DispatchCell
-            uischema={uischema}
-            schema={schema}
-            path={path}
-            id={id + '-input'}
-            enabled={enabled}
-          />
-          <div className={divClassNames}>
-            {!isValid ? errors : showDescription ? description : null}
-          </div>
-        </div>
-      );
     }
+
+    if (visible === false) {
+      return null;
+    }
+
+    return (
+      <Input.Wrapper
+        id={id}
+        label={computeLabel(label, required ?? false, appliedUiSchemaOptions.hideRequiredAsterisk)}
+        description={showDescription ? description : undefined}
+        error={!isValid ? errors : undefined}
+        withAsterisk={required}
+      >
+        <DispatchCell
+          uischema={uischema}
+          schema={schema}
+          path={path}
+          id={id + '-input'}
+          enabled={enabled}
+        />
+      </Input.Wrapper>
+    );
+  }
+
+  private isDescriptionHidden(
+    visible: boolean | undefined,
+    description: string | undefined,
+    isFocused: boolean,
+    showUnfocusedDescription: boolean | undefined
+  ): boolean {
+    if (visible === false || !description) {
+      return true;
+    }
+    if (showUnfocusedDescription) {
+      return false;
+    }
+    return !isFocused;
   }
 }
 
 export const inputControlTester: RankedTester = rankWith(1, isControl);
 
-export default withVanillaControlProps(withJsonFormsControlProps(InputControl));
+export default withJsonFormsControlProps(InputControl);

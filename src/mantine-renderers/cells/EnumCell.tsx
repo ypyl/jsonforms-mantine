@@ -22,76 +22,31 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React, { useMemo } from 'react';
-import {
-  EnumCellProps,
-  isEnumControl,
-  RankedTester,
-  rankWith,
-} from '@jsonforms/core';
-import {
-  TranslateProps,
-  withJsonFormsEnumCellProps,
-  withTranslateProps,
-} from '@jsonforms/react';
-import { i18nDefaults, withVanillaEnumCellProps } from '../util';
-import type { VanillaRendererProps } from '../index';
+import type { EnumCellProps, RankedTester } from '@jsonforms/core';
+import { isEnumControl, rankWith } from '@jsonforms/core';
+import { withJsonFormsEnumCellProps } from '@jsonforms/react';
+import { Select } from '@mantine/core';
 
-export const EnumCell = (
-  props: EnumCellProps & VanillaRendererProps & TranslateProps
-) => {
-  const {
-    data,
-    className,
-    id,
-    enabled,
-    schema,
-    uischema,
-    path,
-    handleChange,
-    options,
-    t,
-  } = props;
-  const noneOptionLabel = useMemo(
-    () => t('enum.none', i18nDefaults['enum.none'], { schema, uischema, path }),
-    [t, schema, uischema, path]
-  );
+export const EnumCell = (props: EnumCellProps) => {
+  const { data, id, enabled, path, handleChange, options } = props;
+
+  if (props.visible === false) {
+    return null;
+  }
+
   return (
-    <select
-      className={className}
+    <Select
       id={id}
+      value={data ?? null}
+      onChange={(value) => handleChange(path, value ?? undefined)}
       disabled={!enabled}
-      autoFocus={uischema.options && uischema.options.focus}
-      value={data || ''}
-      onChange={(ev) =>
-        handleChange(
-          path,
-          ev.target.selectedIndex === 0 ? undefined : ev.target.value
-        )
-      }
-    >
-      {[
-        <option value={''} key={'jsonforms.enum.none'}>
-          {noneOptionLabel}
-        </option>,
-      ].concat(
-        options.map((optionValue) => (
-          <option
-            value={optionValue.value}
-            label={optionValue.label}
-            key={optionValue.value}
-          />
-        ))
-      )}
-    </select>
+      data={options?.map((opt) => ({ value: opt.value, label: opt.label || opt.value })) ?? []}
+      clearable
+      allowDeselect
+    />
   );
 };
-/**
- * Default tester for enum controls.
- * @type {RankedTester}
- */
+
 export const enumCellTester: RankedTester = rankWith(2, isEnumControl);
 
-export default withJsonFormsEnumCellProps(
-  withTranslateProps(withVanillaEnumCellProps(EnumCell))
-);
+export default withJsonFormsEnumCellProps(EnumCell);
