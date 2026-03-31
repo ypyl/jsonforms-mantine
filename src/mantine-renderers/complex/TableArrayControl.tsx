@@ -22,7 +22,6 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React from 'react';
 import fpfilter from 'lodash/fp/filter';
 import fpmap from 'lodash/fp/map';
 import fpflow from 'lodash/fp/flow';
@@ -30,6 +29,7 @@ import filter from 'lodash/filter';
 import join from 'lodash/join';
 import fpkeys from 'lodash/fp/keys';
 import fpstartCase from 'lodash/fp/startCase';
+import React from 'react';
 import {
   type ArrayControlProps,
   type ControlElement,
@@ -49,145 +49,140 @@ import {
   withJsonFormsArrayControlProps,
   withTranslateProps,
 } from '@jsonforms/react';
-import { withVanillaControlProps } from '../util';
+import { Box, Button, Table, Text } from '@mantine/core';
 import type { VanillaRendererProps } from '../index';
+import { withVanillaControlProps } from '../util';
 
 const { convertToValidClassName } = Helpers;
 
 const { or, isObjectArrayControl, isPrimitiveArrayControl, rankWith } = Test;
 
-/**
- * Alternative tester for an array that also checks whether the 'table'
- * option is set.
- * @type {RankedTester}
- */
 export const tableArrayControlTester: RankedTester = rankWith(
   3,
   or(isObjectArrayControl, isPrimitiveArrayControl)
 );
 
-class TableArrayControl extends React.Component<
+const TableArrayControl: React.FC<
   ArrayControlProps &
-    VanillaRendererProps & { translations: ArrayTranslations },
-  any
-> {
-  confirmDelete = (path: string, index: number) => {
-    const p = path.substring(0, path.lastIndexOf('.'));
-    this.props.removeItems(p, [index])();
+    VanillaRendererProps & { translations: ArrayTranslations }
+> = ({
+  addItem,
+  uischema,
+  schema,
+  rootSchema,
+  path,
+  data,
+  visible,
+  errors,
+  label,
+  getStyleAsClassName,
+  childErrors,
+  translations,
+  enabled,
+}) => {
+  if (visible === false) {
+    return null;
+  }
+
+  const controlElement = uischema as ControlElement;
+  const tableClass = getStyleAsClassName?.('array.table.table') ?? '';
+  const labelClass = getStyleAsClassName?.('array.table.label') ?? '';
+  const controlClass = [
+    getStyleAsClassName?.('array.table') ?? '',
+    convertToValidClassName(controlElement.scope),
+  ].join(' ');
+  const buttonClass = getStyleAsClassName?.('array.table.button') ?? '';
+  const validationClass = getStyleAsClassName?.('array.table.validation') ?? '';
+  const validationErrorClass = getStyleAsClassName?.('array.table.validation.error') ?? '';
+  const isValid = errors.length === 0;
+  const divClassNames = [validationClass]
+    .concat(isValid ? '' : validationErrorClass)
+    .join(' ');
+  const createControlElement = (key?: string): ControlElement => ({
+    type: 'Control',
+    label: false,
+    scope: schema.type === 'object' ? `#/properties/${key}` : '#',
+  });
+
+  const confirmDelete = (childPath: string, index: number) => {
+    const p = childPath.substring(0, childPath.lastIndexOf('.'));
+    const removeItems = (path as any).removeItems;
+    if (removeItems) {
+      removeItems(p, [index])();
+    }
   };
 
-  render() {
-    const {
-      addItem,
-      uischema,
-      schema,
-      rootSchema,
-      path,
-      data,
-      visible,
-      errors,
-      label,
-      getStyleAsClassName,
-      childErrors,
-      translations,
-      enabled,
-    } = this.props;
-
-    const controlElement = uischema as ControlElement;
-    const tableClass = getStyleAsClassName('array.table.table');
-    const labelClass = getStyleAsClassName('array.table.label');
-    const buttonClass = getStyleAsClassName('array.table.button');
-    const validationClass = getStyleAsClassName('array.table.validation');
-    const controlClass = [
-      getStyleAsClassName('array.table'),
-      convertToValidClassName(controlElement.scope),
-    ].join(' ');
-    const createControlElement = (key?: string): ControlElement => ({
-      type: 'Control',
-      label: false,
-      scope: schema.type === 'object' ? `#/properties/${key}` : '#',
-    });
-    const isValid = errors.length === 0;
-    const divClassNames = [validationClass]
-      .concat(
-        isValid ? '' : getStyleAsClassName('array.table.validation.error')
-      )
-      .join(' ');
-
-    return (
-      <div className={controlClass} hidden={!visible}>
-        <header>
-          <label className={labelClass}>{label}</label>
-          <button
-            type='button'
-            disabled={!enabled}
-            className={buttonClass}
-            onClick={addItem(path, createDefaultValue(schema, rootSchema))}
-          >
-            {translations.addTooltip}
-          </button>
-        </header>
-        <div className={divClassNames}>{!isValid ? errors : ''}</div>
-        <table className={tableClass}>
-          <thead>
-            <tr>
-              {schema.properties ? (
-                fpflow(
+  return (
+    <Box className={controlClass}>
+      <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+        <Text fw={500} className={labelClass}>{label}</Text>
+        <Button
+          className={buttonClass}
+          variant='light'
+          size='xs'
+          disabled={!enabled}
+          onClick={addItem(path, createDefaultValue(schema, rootSchema))}
+        >
+          {translations.addTooltip}
+        </Button>
+      </Box>
+      {!isValid && (
+        <Text className={divClassNames} c='red' size='sm' mb='xs'>{errors}</Text>
+      )}
+      <Table className={tableClass} striped highlightOnHover>
+        <Table.Thead>
+          <Table.Tr>
+            {schema.properties ? (
+              (() => {
+                const props = schema.properties;
+                return fpflow(
                   fpkeys,
-                  fpfilter((prop) => schema.properties[prop].type !== 'array'),
+                  fpfilter((prop) => props[prop].type !== 'array'),
                   fpmap((prop) => (
-                    <th key={prop}>
-                      {schema.properties[prop].title ?? fpstartCase(prop)}
-                    </th>
+                    <Table.Th key={prop}>
+                      {props[prop].title ?? fpstartCase(prop)}
+                    </Table.Th>
                   ))
-                )(schema.properties)
-              ) : (
-                <th>Items</th>
-              )}
-              <th>Valid</th>
-              <th>&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-            {!data || !Array.isArray(data) || data.length === 0 ? (
-              <tr>
-                <td>{translations.noDataMessage}</td>
-              </tr>
+                )(props);
+              })()
             ) : (
-              data.map((_child, index) => {
-                const childPath = Paths.compose(path, `${index}`);
-                // TODO
-                const errorsPerEntry: any[] = filter(childErrors, (error) => {
-                  const errorPath = getControlPath(error);
-                  return errorPath.startsWith(childPath);
-                });
+              <Table.Th>Items</Table.Th>
+            )}
+            <Table.Th>Valid</Table.Th>
+            <Table.Th></Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
+          {!data || !Array.isArray(data) || data.length === 0 ? (
+            <Table.Tr>
+              <Table.Td colSpan={3}>{translations.noDataMessage}</Table.Td>
+            </Table.Tr>
+          ) : (
+            data.map((_child, index) => {
+              const childPath = Paths.compose(path, `${index}`);
+              const errorsPerEntry: any[] = filter(childErrors, (error) => {
+                const errorPath = getControlPath(error);
+                return errorPath.startsWith(childPath);
+              });
 
-                const validationClassName =
-                  getStyleAsClassName('array.validation');
-                const errorValidationClassName = getStyleAsClassName(
-                  'array.validation.error'
-                );
-                const errorClassNames = errorsPerEntry
-                  ? [validationClassName]
-                      .concat(errorValidationClassName)
-                      .join(' ')
-                  : validationClassName;
+              const validationClassName = getStyleAsClassName?.('array.validation') ?? 'array.validation';
+              const errorValidationClassName = getStyleAsClassName?.('array.validation.error') ?? 'array.validation.error';
+              const errorClassNames = errorsPerEntry
+                ? [validationClassName].concat(errorValidationClassName).join(' ')
+                : validationClassName;
 
-                return (
-                  <tr key={childPath}>
-                    {schema.properties ? (
-                      fpflow(
+              return (
+                <Table.Tr key={childPath}>
+                  {schema.properties ? (
+                    (() => {
+                      const props = schema.properties;
+                      return fpflow(
                         fpkeys,
-                        fpfilter(
-                          (prop) => schema.properties[prop].type !== 'array'
-                        ),
+                        fpfilter((prop) => props[prop].type !== 'array'),
                         fpmap((prop) => {
-                          const childPropPath = Paths.compose(
-                            childPath,
-                            prop.toString()
-                          );
+                          const childPropPath = Paths.compose(childPath, prop.toString());
                           return (
-                            <td key={childPropPath}>
+                            <Table.Td key={childPropPath}>
                               <DispatchCell
                                 schema={Resolve.schema(
                                   schema,
@@ -197,57 +192,54 @@ class TableArrayControl extends React.Component<
                                 uischema={createControlElement(encode(prop))}
                                 path={childPath + '.' + prop}
                               />
-                            </td>
+                            </Table.Td>
                           );
                         })
-                      )(schema.properties)
+                      )(props);
+                    })()
+                  ) : (
+                    <Table.Td key={Paths.compose(childPath, index.toString())}>
+                      <DispatchCell
+                        schema={schema}
+                        uischema={createControlElement()}
+                        path={childPath}
+                      />
+                    </Table.Td>
+                  )}
+                  <Table.Td>
+                    {errorsPerEntry ? (
+                      <Text className={errorClassNames} size='sm'>
+                        {join(errorsPerEntry.map((e) => e.message), ' and ')}
+                      </Text>
                     ) : (
-                      <td key={Paths.compose(childPath, index.toString())}>
-                        <DispatchCell
-                          schema={schema}
-                          uischema={createControlElement()}
-                          path={childPath}
-                        />
-                      </td>
+                      <Text className={errorClassNames} size='sm'>OK</Text>
                     )}
-                    <td>
-                      {errorsPerEntry ? (
-                        <span className={errorClassNames}>
-                          {join(
-                            errorsPerEntry.map((e) => e.message),
-                            ' and '
-                          )}
-                        </span>
-                      ) : (
-                        <span className={errorClassNames}>OK</span>
-                      )}
-                    </td>
-                    <td>
-                      <button
-                        type='button'
-                        disabled={!enabled}
-                        aria-label={translations.removeAriaLabel}
-                        onClick={() => {
-                          if (
-                            window.confirm(translations.deleteDialogMessage)
-                          ) {
-                            this.confirmDelete(childPath, index);
-                          }
-                        }}
-                      >
-                        {translations.removeTooltip}
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-}
+                  </Table.Td>
+                  <Table.Td>
+                    <Button
+                      variant='subtle'
+                      color='red'
+                      size='xs'
+                      disabled={!enabled}
+                      aria-label={translations.removeAriaLabel}
+                      onClick={() => {
+                        if (window.confirm(translations.deleteDialogMessage)) {
+                          confirmDelete(childPath, index);
+                        }
+                      }}
+                    >
+                      {translations.removeTooltip}
+                    </Button>
+                  </Table.Td>
+                </Table.Tr>
+              );
+            })
+          )}
+        </Table.Tbody>
+      </Table>
+    </Box>
+  );
+};
 
 export default withVanillaControlProps(
   withJsonFormsArrayControlProps(
