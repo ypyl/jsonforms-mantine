@@ -22,28 +22,16 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import maxBy from 'lodash/maxBy';
-import type { ControlProps, ControlState, RankedTester } from '@jsonforms/core';
-import {
-  computeLabel,
-  isControl,
-  NOT_APPLICABLE,
-  rankWith,
-} from '@jsonforms/core';
-import {
-  Control,
-  DispatchCell,
-  withJsonFormsControlProps,
-} from '@jsonforms/react';
-import { Box, Input } from '@mantine/core';
-import merge from 'lodash/merge';
-import { withVanillaControlProps } from '../util';
-import type { VanillaRendererProps } from '../index';
+import maxBy from "lodash/maxBy";
+import type { ControlProps, ControlState, RankedTester } from "@jsonforms/core";
+import { computeLabel, isControl, NOT_APPLICABLE, rankWith } from "@jsonforms/core";
+import { Control, DispatchCell, withJsonFormsControlProps } from "@jsonforms/react";
+import { Box, Input } from "@mantine/core";
+import merge from "lodash/merge";
+import { withVanillaControlProps } from "../util";
+import type { VanillaRendererProps } from "../index";
 
-export class InputControl extends Control<
-  ControlProps & VanillaRendererProps,
-  ControlState
-> {
+export class InputControl extends Control<ControlProps & VanillaRendererProps, ControlState> {
   render() {
     const {
       classNames,
@@ -63,21 +51,18 @@ export class InputControl extends Control<
     } = this.props;
 
     const isValid = errors.length === 0;
-    const appliedUiSchemaOptions = merge({}, config, uischema.options);
+    const appliedUiSchemaOptions = merge({}, config, { hideRequiredAsterisk: true }, uischema.options);
     const showDescription = !this.isDescriptionHidden(
       visible,
       description,
       this.state.isFocused,
-      appliedUiSchemaOptions.showUnfocusedDescription
+      appliedUiSchemaOptions.showUnfocusedDescription,
     );
     const testerContext = { rootSchema, config };
     const cell = maxBy(cells, (r) => r.tester(uischema, schema, testerContext));
 
-    if (
-      cell === undefined ||
-      cell.tester(uischema, schema, testerContext) === NOT_APPLICABLE
-    ) {
-      console.warn('No applicable cell found.', uischema, schema);
+    if (cell === undefined || cell.tester(uischema, schema, testerContext) === NOT_APPLICABLE) {
+      console.warn("No applicable cell found.", uischema, schema);
       return null;
     }
 
@@ -86,11 +71,7 @@ export class InputControl extends Control<
     }
 
     return (
-      <Box
-        className={classNames?.wrapper}
-        onFocus={this.onFocus}
-        onBlur={this.onBlur}
-      >
+      <Box className={classNames?.wrapper} onFocus={this.onFocus} onBlur={this.onBlur}>
         <Input.Wrapper
           id={id}
           label={computeLabel(label, required ?? false, appliedUiSchemaOptions.hideRequiredAsterisk)}
@@ -99,13 +80,7 @@ export class InputControl extends Control<
           withAsterisk={required}
           className={classNames?.label}
         >
-          <DispatchCell
-            uischema={uischema}
-            schema={schema}
-            path={path}
-            id={id + '-input'}
-            enabled={enabled}
-          />
+          <DispatchCell uischema={uischema} schema={schema} path={path} id={id + "-input"} enabled={enabled} />
         </Input.Wrapper>
       </Box>
     );
@@ -115,7 +90,7 @@ export class InputControl extends Control<
     visible: boolean | undefined,
     description: string | undefined,
     isFocused: boolean,
-    showUnfocusedDescription: boolean | undefined
+    showUnfocusedDescription: boolean | undefined,
   ): boolean {
     if (visible === false || !description) {
       return true;
