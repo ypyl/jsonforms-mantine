@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
 import { mantineRenderers, mantineCells } from './mantine-renderers';
-import { Container, Title, Card, Stack, Button, Group } from '@mantine/core';
+import { Container, Title, Card, Stack, Button, Group, Tabs } from '@mantine/core';
 
 const schema = {
   type: 'object',
@@ -92,27 +92,34 @@ function App() {
   const [data, setData] = useState<FormData>(initialData);
 
   return (
-    <Container size="sm" py="xl">
+    <Container size="sm" py="xl" fluid>
       <Stack gap="xl">
         <Title order={2}>JSON Forms + Mantine POC</Title>
-        <Card shadow="sm" padding="lg">
-          <JsonForms
-            schema={schema}
-            uischema={uischema}
-            data={data}
-            renderers={mantineRenderers}
-            cells={mantineCells}
-            onChange={({ data }) => setData(data)}
-          />
-        </Card>
-        <Card shadow="sm" padding="lg">
-          <Title order={4}>Current Data</Title>
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-        </Card>
-        <Group>
-          <Button onClick={() => setData(initialData)}>Reset</Button>
-          <Button onClick={() => setData({} as FormData)} variant="outline">Clear</Button>
-        </Group>
+        <Tabs defaultValue="basic">
+          <Tabs.List>
+            <Tabs.Tab value="basic">Basic Example</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="basic" pt="md">
+            <Card shadow="sm" padding="lg">
+              <JsonForms
+                schema={schema}
+                uischema={uischema}
+                data={data}
+                renderers={mantineRenderers}
+                cells={mantineCells}
+                onChange={({ data }) => setData(data)}
+              />
+            </Card>
+            <Card shadow="sm" padding="lg" mt="md">
+              <Title order={4}>Current Data</Title>
+              <pre>{JSON.stringify(data, null, 2)}</pre>
+            </Card>
+            <Group mt="md">
+              <Button onClick={() => setData(initialData)}>Reset</Button>
+              <Button onClick={() => setData({} as FormData)} variant="outline">Clear</Button>
+            </Group>
+          </Tabs.Panel>
+        </Tabs>
       </Stack>
     </Container>
   );
