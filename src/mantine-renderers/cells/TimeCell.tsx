@@ -22,7 +22,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React from 'react';
+import { useRef } from 'react';
 import {
   type CellProps,
   isTimeControl,
@@ -30,13 +30,12 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
+import { ActionIcon } from '@mantine/core';
+import { TimeInput } from '@mantine/dates';
+import { IconClock2 } from '@tabler/icons-react';
 import type { VanillaRendererProps } from '../index';
 import { withVanillaCellProps } from '../util/index';
 
-/**
- * AJV 'time' format expects HH:mm:ss while <input type='time'> only returns HH:mm.
- * Therefore we append ':00' when the seconds are missing.
- */
 const appendSecondsIfNecessary = (value: unknown) => {
   if (typeof value === 'string') {
     const splitValue = value.split(':');
@@ -50,26 +49,36 @@ const appendSecondsIfNecessary = (value: unknown) => {
 
 export const TimeCell = (props: CellProps & VanillaRendererProps) => {
   const { data, className, id, enabled, uischema, path, handleChange } = props;
+  const ref = useRef<HTMLInputElement>(null);
+
+  if (props.visible === false) {
+    return null;
+  }
 
   return (
-    <input
-      type='time'
-      value={data || ''}
-      onChange={(ev) =>
-        handleChange(path, appendSecondsIfNecessary(ev.target.value))
-      }
+    <TimeInput
       className={className}
       id={id}
+      value={data ?? ''}
+      onChange={(ev) =>
+        handleChange(path, appendSecondsIfNecessary(ev.currentTarget.value))
+      }
       disabled={!enabled}
-      autoFocus={uischema.options && uischema.options.focus}
+      autoFocus={uischema?.options?.focus}
+      rightSection={
+        <ActionIcon
+          variant="subtle"
+          color="gray"
+          onClick={() => ref.current?.showPicker()}
+        >
+          <IconClock2 size={16} />
+        </ActionIcon>
+      }
+      ref={ref}
     />
   );
 };
 
-/**
- * Default tester for date controls.
- * @type {RankedTester}
- */
 export const timeCellTester: RankedTester = rankWith(2, isTimeControl);
 
 export default withJsonFormsCellProps(withVanillaCellProps(TimeCell));

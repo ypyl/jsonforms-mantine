@@ -4,20 +4,43 @@ import { mantineRenderers, mantineCells } from './mantine-renderers';
 import { Container, Title, Card, Stack, Button, Group, Tabs } from '@mantine/core';
 import { schema as basicSchema, uischema as basicUischema, initialData as basicInitialData, type BasicFormData } from './examples/basic';
 import { schema as complexSchema, uischema as complexUischema, initialData as complexInitialData, type ComplexFormData } from './examples/complex';
+import { schema as allTypesSchema, uischema as allTypesUischema, initialData as allTypesInitialData, type AllTypesFormData } from './examples/allTypes';
 
 function App() {
   const [basicData, setBasicData] = useState<BasicFormData>(basicInitialData);
   const [complexData, setComplexData] = useState<ComplexFormData>(complexInitialData);
+  const [allTypesData, setAllTypesData] = useState<AllTypesFormData>(allTypesInitialData);
 
   return (
     <Container size="sm" py="xl" fluid>
       <Stack gap="xl">
         <Title order={2}>JSON Forms + Mantine POC</Title>
-        <Tabs defaultValue="complex">
+        <Tabs defaultValue="allTypes">
           <Tabs.List>
+            <Tabs.Tab value="allTypes">All Types Example</Tabs.Tab>
             <Tabs.Tab value="complex">Complex Example</Tabs.Tab>
             <Tabs.Tab value="basic">Basic Example</Tabs.Tab>
           </Tabs.List>
+          <Tabs.Panel value="allTypes" pt="md">
+            <Card shadow="sm" padding="lg">
+              <JsonForms
+                schema={allTypesSchema}
+                uischema={allTypesUischema}
+                data={allTypesData}
+                renderers={mantineRenderers}
+                cells={mantineCells}
+                onChange={({ data }) => setAllTypesData(data)}
+              />
+            </Card>
+            <Card shadow="sm" padding="lg" mt="md">
+              <Title order={4}>Current Data</Title>
+              <pre>{JSON.stringify(allTypesData, null, 2)}</pre>
+            </Card>
+            <Group mt="md">
+              <Button onClick={() => setAllTypesData(allTypesInitialData)}>Reset</Button>
+              <Button onClick={() => setAllTypesData({} as AllTypesFormData)} variant="outline">Clear</Button>
+            </Group>
+          </Tabs.Panel>
           <Tabs.Panel value="complex" pt="md">
             <Card shadow="sm" padding="lg">
               <JsonForms
