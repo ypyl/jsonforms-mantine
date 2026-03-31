@@ -10,13 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jsonforms/core": "^3.7.0",
-    "@jsonforms/react": "^3.7.0",
-    "@mantine/core": "^8.3.18",
-    "@mantine/hooks": "^8.3.18",
-    "@tabler/icons-react": "^3.41.1",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "@jsonforms/core": "3.7.0",
+    "@jsonforms/react": "3.7.0",
+    "@mantine/core": "9.0.0 ",
+    "@mantine/dates": "9.0.0 ",
+    "@mantine/hooks": "9.0.0 ",
+    "@tabler/icons-react": "3.41.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

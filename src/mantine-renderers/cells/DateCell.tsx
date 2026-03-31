@@ -22,7 +22,6 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React from 'react';
 import {
   type CellProps,
   isDateControl,
@@ -30,21 +29,25 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
+import { DateInput } from '@mantine/dates';
 import type { VanillaRendererProps } from '../index';
 import { withVanillaCellProps } from '../util/index';
 
 export const DateCell = (props: CellProps & VanillaRendererProps) => {
   const { data, className, id, enabled, uischema, path, handleChange } = props;
 
+  if (props.visible === false) {
+    return null;
+  }
+
   return (
-    <input
-      type='date'
-      value={data || ''}
-      onChange={(ev) => handleChange(path, ev.target.value)}
+    <DateInput
       className={className}
       id={id}
+      value={data ?? null}
+      onChange={(value: string | null) => handleChange(path, value ?? undefined)}
       disabled={!enabled}
-      autoFocus={uischema.options && uischema.options.focus}
+      autoFocus={uischema?.options?.focus}
     />
   );
 };
