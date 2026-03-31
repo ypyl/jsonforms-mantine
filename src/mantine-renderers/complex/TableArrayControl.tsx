@@ -79,6 +79,7 @@ const TableArrayControl: React.FC<
   childErrors,
   translations,
   enabled,
+  removeItems,
 }) => {
   if (visible === false) {
     return null;
@@ -106,7 +107,6 @@ const TableArrayControl: React.FC<
 
   const confirmDelete = (childPath: string, index: number) => {
     const p = childPath.substring(0, childPath.lastIndexOf('.'));
-    const removeItems = (path as any).removeItems;
     if (removeItems) {
       removeItems(p, [index])();
     }
