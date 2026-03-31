@@ -23,11 +23,11 @@
   THE SOFTWARE.
 */
 import isEmpty from 'lodash/isEmpty';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 import {
-  GroupLayout,
-  LayoutProps,
-  RankedTester,
+  type GroupLayout,
+  type LayoutProps,
+  type RankedTester,
   rankWith,
   uiTypeIs,
 } from '@jsonforms/core';

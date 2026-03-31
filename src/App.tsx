@@ -25,6 +25,26 @@ const schema = {
       title: 'Status',
       enum: ['Pending', 'Active', 'Completed'],
     },
+    comments: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          date: {
+            type: 'string',
+            format: 'date',
+          },
+          message: {
+            type: 'string',
+            maxLength: 5,
+          },
+          enum: {
+            type: 'string',
+            enum: ['foo', 'bar'],
+          },
+        },
+      },
+    },
   },
   required: ['name'],
 };
@@ -48,6 +68,10 @@ const uischema = {
       type: 'Control',
       scope: '#/properties/status',
     },
+    {
+      type: 'Control',
+      scope: '#/properties/comments',
+    },
   ],
 };
 
@@ -56,6 +80,10 @@ const initialData = {
   age: 30,
   active: true,
   status: 'Active',
+  comments: [
+    { date: '2024-01-15', message: 'Hello', enum: 'foo' },
+    { date: '2024-01-16', message: 'World', enum: 'bar' },
+  ],
 };
 
 type FormData = typeof initialData;

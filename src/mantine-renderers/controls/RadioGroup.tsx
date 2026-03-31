@@ -25,9 +25,9 @@
 import React, { useMemo, useState } from 'react';
 import {
   computeLabel,
-  ControlProps,
+  type ControlProps,
   isDescriptionHidden,
-  OwnPropsOfEnum,
+  type OwnPropsOfEnum,
 } from '@jsonforms/core';
 import type { VanillaRendererProps } from '../index';
 import { findStyleAsClassName } from '../reducers/styling';

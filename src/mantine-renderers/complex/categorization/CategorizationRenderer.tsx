@@ -25,7 +25,7 @@
 import React, { useState } from 'react';
 import type { Categorization, Category, LayoutProps } from '@jsonforms/core';
 import {
-  TranslateProps,
+  type TranslateProps,
   withJsonFormsLayoutProps,
   withTranslateProps,
 } from '@jsonforms/react';

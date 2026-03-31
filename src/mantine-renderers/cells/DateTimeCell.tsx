@@ -24,9 +24,9 @@
 */
 import React from 'react';
 import {
-  CellProps,
+  type CellProps,
   isDateTimeControl,
-  RankedTester,
+  type RankedTester,
   rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';

@@ -25,13 +25,13 @@
 import range from 'lodash/range';
 import React, { useMemo } from 'react';
 import {
-  ArrayControlProps,
+  type ArrayControlProps,
   composePaths,
   createDefaultValue,
   findUISchema,
   Helpers,
-  ControlElement,
-  ArrayTranslations,
+  type ControlElement,
+  type ArrayTranslations,
 } from '@jsonforms/core';
 import {
   JsonFormsDispatch,

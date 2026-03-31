@@ -22,8 +22,8 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React, { FunctionComponent } from 'react';
-import { LabelProps, RankedTester, rankWith, uiTypeIs } from '@jsonforms/core';
+import React, { type FunctionComponent } from 'react';
+import { type LabelProps, type RankedTester, rankWith, uiTypeIs } from '@jsonforms/core';
 import { withJsonFormsLabelProps } from '@jsonforms/react';
 import type { VanillaRendererProps } from '../index';
 import { withVanillaControlProps } from '../util';

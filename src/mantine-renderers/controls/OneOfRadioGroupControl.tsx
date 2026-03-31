@@ -25,10 +25,10 @@
 import React from 'react';
 import {
   and,
-  ControlProps,
+  type ControlProps,
   isOneOfEnumControl,
   optionIs,
-  RankedTester,
+  type RankedTester,
   rankWith,
 } from '@jsonforms/core';
 import { withVanillaControlProps } from '../util';

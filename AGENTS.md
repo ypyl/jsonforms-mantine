@@ -13,7 +13,10 @@ npm run dev
 # Production build (TypeScript check + Vite build)
 npm run build
 
-# TypeScript check only (fast, uses project references)
+# Vite build only (faster, skips type checking)
+npx vite build
+
+# TypeScript check only (fails due to unused files with type errors)
 tsc -b
 
 # Lint all files
@@ -22,6 +25,8 @@ npm run lint
 # Preview production build locally
 npm run preview
 ```
+
+**Note**: `tsc -b` fails due to type errors in unused files (DateCell, DateTimeCell, NumberCell, etc.). Use `npx vite build` for faster iteration.
 
 ## Project Structure
 

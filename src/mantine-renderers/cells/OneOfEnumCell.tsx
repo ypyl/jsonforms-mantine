@@ -24,13 +24,13 @@
 */
 import React, { useMemo } from 'react';
 import {
-  EnumCellProps,
+  type EnumCellProps,
   isOneOfEnumControl,
-  RankedTester,
+  type RankedTester,
   rankWith,
 } from '@jsonforms/core';
 import {
-  TranslateProps,
+  type TranslateProps,
   withJsonFormsOneOfEnumCellProps,
   withTranslateProps,
 } from '@jsonforms/react';
