@@ -27,11 +27,23 @@ import { isStringControl, rankWith } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
 import { TextInput } from '@mantine/core';
 import merge from 'lodash/merge';
+import type { VanillaRendererProps } from '../index';
+import { withVanillaCellProps } from '../util/index';
 
-export const TextCell = (props: CellProps) => {
-  const { data, id, enabled, uischema, schema, path, handleChange } = props;
+export const TextCell = (props: CellProps & VanillaRendererProps) => {
+  const {
+    config,
+    data,
+    className,
+    id,
+    enabled,
+    uischema,
+    schema,
+    path,
+    handleChange,
+  } = props;
   const maxLength = schema.maxLength;
-  const appliedUiSchemaOptions = merge({}, uischema.options);
+  const appliedUiSchemaOptions = merge({}, config, uischema.options);
 
   if (props.visible === false) {
     return null;
@@ -39,6 +51,7 @@ export const TextCell = (props: CellProps) => {
 
   return (
     <TextInput
+      className={className}
       id={id}
       value={data ?? ''}
       onChange={(event) =>
@@ -48,10 +61,11 @@ export const TextCell = (props: CellProps) => {
       placeholder={appliedUiSchemaOptions.placeholder}
       maxLength={appliedUiSchemaOptions.restrict ? maxLength : undefined}
       type={appliedUiSchemaOptions.format === 'password' ? 'password' : 'text'}
+      autoFocus={appliedUiSchemaOptions.focus}
     />
   );
 };
 
 export const textCellTester: RankedTester = rankWith(1, isStringControl);
 
-export default withJsonFormsCellProps(TextCell);
+export default withJsonFormsCellProps(withVanillaCellProps(TextCell));

@@ -22,13 +22,38 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
+import { useMemo } from 'react';
 import type { EnumCellProps, RankedTester } from '@jsonforms/core';
 import { isEnumControl, rankWith } from '@jsonforms/core';
-import { withJsonFormsEnumCellProps } from '@jsonforms/react';
+import {
+  type TranslateProps,
+  withJsonFormsEnumCellProps,
+  withTranslateProps,
+} from '@jsonforms/react';
+import { i18nDefaults, withVanillaEnumCellProps } from '../util';
+import type { VanillaRendererProps } from '../index';
 import { Select } from '@mantine/core';
 
-export const EnumCell = (props: EnumCellProps) => {
-  const { data, id, enabled, path, handleChange, options } = props;
+export const EnumCell = (
+  props: EnumCellProps & VanillaRendererProps & TranslateProps
+) => {
+  const {
+    data,
+    className,
+    id,
+    enabled,
+    schema,
+    uischema,
+    path,
+    handleChange,
+    options,
+    t,
+  } = props;
+
+  const noneOptionLabel = useMemo(
+    () => t('enum.none', i18nDefaults['enum.none'], { schema, uischema, path }),
+    [t, schema, uischema, path]
+  );
 
   if (props.visible === false) {
     return null;
@@ -36,17 +61,25 @@ export const EnumCell = (props: EnumCellProps) => {
 
   return (
     <Select
+      className={className}
       id={id}
       value={data ?? null}
       onChange={(value) => handleChange(path, value ?? undefined)}
       disabled={!enabled}
-      data={options?.map((opt) => ({ value: opt.value, label: opt.label || opt.value })) ?? []}
+      data={[
+        { value: '', label: noneOptionLabel },
+        ...(options?.map((opt) => ({ value: opt.value, label: opt.label || opt.value })) ?? []),
+      ]}
+      placeholder={noneOptionLabel}
       clearable
       allowDeselect
+      autoFocus={uischema?.options?.focus}
     />
   );
 };
 
 export const enumCellTester: RankedTester = rankWith(2, isEnumControl);
 
-export default withJsonFormsEnumCellProps(EnumCell);
+export default withJsonFormsEnumCellProps(
+  withTranslateProps(withVanillaEnumCellProps(EnumCell))
+);

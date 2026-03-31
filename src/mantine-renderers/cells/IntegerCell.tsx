@@ -26,9 +26,11 @@ import type { CellProps, RankedTester } from '@jsonforms/core';
 import { isIntegerControl, rankWith } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
 import { NumberInput } from '@mantine/core';
+import type { VanillaRendererProps } from '../index';
+import { withVanillaCellProps } from '../util/index';
 
-export const IntegerCell = (props: CellProps) => {
-  const { data, id, enabled, path, handleChange, schema } = props;
+export const IntegerCell = (props: CellProps & VanillaRendererProps) => {
+  const { data, className, id, enabled, uischema, path, handleChange, schema } = props;
 
   if (props.visible === false) {
     return null;
@@ -36,6 +38,7 @@ export const IntegerCell = (props: CellProps) => {
 
   return (
     <NumberInput
+      className={className}
       id={id}
       value={data ?? ''}
       onChange={(value) => handleChange(path, value === '' ? undefined : Number(value))}
@@ -44,10 +47,11 @@ export const IntegerCell = (props: CellProps) => {
       max={schema.maximum}
       step={1}
       allowDecimal={false}
+      autoFocus={uischema?.options?.focus}
     />
   );
 };
 
 export const integerCellTester: RankedTester = rankWith(2, isIntegerControl);
 
-export default withJsonFormsCellProps(IntegerCell);
+export default withJsonFormsCellProps(withVanillaCellProps(IntegerCell));

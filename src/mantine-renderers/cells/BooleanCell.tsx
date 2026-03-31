@@ -26,9 +26,10 @@ import type { CellProps, RankedTester } from '@jsonforms/core';
 import { isBooleanControl, rankWith } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
 import { Checkbox } from '@mantine/core';
+import type { VanillaRendererProps } from '../index';
 
-export const BooleanCell = (props: CellProps) => {
-  const { data, id, enabled, path, handleChange } = props;
+export const BooleanCell = (props: CellProps & VanillaRendererProps) => {
+  const { data, className, id, enabled, uischema, path, handleChange } = props;
 
   if (props.visible === false) {
     return null;
@@ -36,10 +37,12 @@ export const BooleanCell = (props: CellProps) => {
 
   return (
     <Checkbox
+      className={className}
       id={id}
       checked={!!data}
       onChange={(event) => handleChange(path, event.currentTarget.checked)}
       disabled={!enabled}
+      autoFocus={uischema?.options?.focus}
     />
   );
 };

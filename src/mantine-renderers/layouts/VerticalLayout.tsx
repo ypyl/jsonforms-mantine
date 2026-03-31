@@ -30,29 +30,45 @@ import { withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Stack } from '@mantine/core';
 import { JsonFormsLayout } from './JsonFormsLayout';
 import { renderChildren } from './util';
+import { withVanillaControlProps } from '../util';
+import type { VanillaRendererProps } from '../index';
 
 export const verticalLayoutTester: RankedTester = rankWith(1, uiTypeIs('VerticalLayout'));
 
-export const VerticalLayoutRenderer = (props: RendererProps) => {
+export const VerticalLayoutRenderer = (
+  props: RendererProps & VanillaRendererProps
+) => {
   const { data: _data, ...otherProps } = props;
   return <VerticalLayoutRendererComponent {...otherProps} />;
 };
 
-const VerticalLayoutRendererComponent: React.FC<RendererProps> = React.memo(function VerticalLayoutRendererComponent({
+const VerticalLayoutRendererComponent: React.FC<RendererProps & VanillaRendererProps> = React.memo(function VerticalLayoutRendererComponent({
   schema,
   uischema,
   path,
   visible,
   enabled,
+  getStyle,
+  getStyleAsClassName,
 }) {
   const verticalLayout = uischema as VerticalLayoutSchema;
+  const layoutClassName = getStyleAsClassName?.('vertical.layout') ?? '';
 
   if (visible === false) {
     return null;
   }
 
   return (
-    <JsonFormsLayout visible={visible}>
+    <JsonFormsLayout
+      className={layoutClassName}
+      uischema={uischema}
+      schema={schema}
+      visible={visible}
+      enabled={enabled}
+      path={path}
+      getStyle={getStyle}
+      getStyleAsClassName={getStyleAsClassName}
+    >
       <Stack gap="sm">
         {renderChildren(verticalLayout, schema, path, enabled)}
       </Stack>
@@ -60,4 +76,6 @@ const VerticalLayoutRendererComponent: React.FC<RendererProps> = React.memo(func
   );
 });
 
-export default withJsonFormsLayoutProps(VerticalLayoutRenderer, false);
+export default withVanillaControlProps(
+  withJsonFormsLayoutProps(VerticalLayoutRenderer, false)
+);

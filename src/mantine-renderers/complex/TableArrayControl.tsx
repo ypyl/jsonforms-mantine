@@ -22,14 +22,14 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import fpfilter from 'lodash/fp/filter';
-import fpmap from 'lodash/fp/map';
-import fpflow from 'lodash/fp/flow';
-import filter from 'lodash/filter';
-import join from 'lodash/join';
-import fpkeys from 'lodash/fp/keys';
-import fpstartCase from 'lodash/fp/startCase';
-import React from 'react';
+import fpfilter from "lodash/fp/filter";
+import fpmap from "lodash/fp/map";
+import fpflow from "lodash/fp/flow";
+import filter from "lodash/filter";
+import join from "lodash/join";
+import fpkeys from "lodash/fp/keys";
+import fpstartCase from "lodash/fp/startCase";
+import React from "react";
 import {
   type ArrayControlProps,
   type ControlElement,
@@ -42,30 +42,24 @@ import {
   getControlPath,
   encode,
   type ArrayTranslations,
-} from '@jsonforms/core';
+} from "@jsonforms/core";
 import {
   DispatchCell,
   withArrayTranslationProps,
   withJsonFormsArrayControlProps,
   withTranslateProps,
-} from '@jsonforms/react';
-import { Box, Button, Table, Text } from '@mantine/core';
-import type { VanillaRendererProps } from '../index';
-import { withVanillaControlProps } from '../util';
+} from "@jsonforms/react";
+import { Box, Button, Table, Text } from "@mantine/core";
+import type { VanillaRendererProps } from "../index";
+import { withVanillaControlProps } from "../util";
 
 const { convertToValidClassName } = Helpers;
 
 const { or, isObjectArrayControl, isPrimitiveArrayControl, rankWith } = Test;
 
-export const tableArrayControlTester: RankedTester = rankWith(
-  3,
-  or(isObjectArrayControl, isPrimitiveArrayControl)
-);
+export const tableArrayControlTester: RankedTester = rankWith(3, or(isObjectArrayControl, isPrimitiveArrayControl));
 
-const TableArrayControl: React.FC<
-  ArrayControlProps &
-    VanillaRendererProps & { translations: ArrayTranslations }
-> = ({
+const TableArrayControl: React.FC<ArrayControlProps & VanillaRendererProps & { translations: ArrayTranslations }> = ({
   addItem,
   uischema,
   schema,
@@ -86,27 +80,24 @@ const TableArrayControl: React.FC<
   }
 
   const controlElement = uischema as ControlElement;
-  const tableClass = getStyleAsClassName?.('array.table.table') ?? '';
-  const labelClass = getStyleAsClassName?.('array.table.label') ?? '';
-  const controlClass = [
-    getStyleAsClassName?.('array.table') ?? '',
-    convertToValidClassName(controlElement.scope),
-  ].join(' ');
-  const buttonClass = getStyleAsClassName?.('array.table.button') ?? '';
-  const validationClass = getStyleAsClassName?.('array.table.validation') ?? '';
-  const validationErrorClass = getStyleAsClassName?.('array.table.validation.error') ?? '';
+  const tableClass = getStyleAsClassName?.("array.table.table") ?? "";
+  const labelClass = getStyleAsClassName?.("array.table.label") ?? "";
+  const controlClass = [getStyleAsClassName?.("array.table") ?? "", convertToValidClassName(controlElement.scope)].join(
+    " ",
+  );
+  const buttonClass = getStyleAsClassName?.("array.table.button") ?? "";
+  const validationClass = getStyleAsClassName?.("array.table.validation") ?? "";
+  const validationErrorClass = getStyleAsClassName?.("array.table.validation.error") ?? "";
   const isValid = errors.length === 0;
-  const divClassNames = [validationClass]
-    .concat(isValid ? '' : validationErrorClass)
-    .join(' ');
+  const divClassNames = [validationClass].concat(isValid ? "" : validationErrorClass).join(" ");
   const createControlElement = (key?: string): ControlElement => ({
-    type: 'Control',
+    type: "Control",
     label: false,
-    scope: schema.type === 'object' ? `#/properties/${key}` : '#',
+    scope: schema.type === "object" ? `#/properties/${key}` : "#",
   });
 
   const confirmDelete = (childPath: string, index: number) => {
-    const p = childPath.substring(0, childPath.lastIndexOf('.'));
+    const p = childPath.substring(0, childPath.lastIndexOf("."));
     if (removeItems) {
       removeItems(p, [index])();
     }
@@ -114,12 +105,14 @@ const TableArrayControl: React.FC<
 
   return (
     <Box className={controlClass}>
-      <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-        <Text fw={500} className={labelClass}>{label}</Text>
+      <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+        <Text fw={500} className={labelClass}>
+          {label}
+        </Text>
         <Button
           className={buttonClass}
-          variant='light'
-          size='xs'
+          variant="light"
+          size="xs"
           disabled={!enabled}
           onClick={addItem(path, createDefaultValue(schema, rootSchema))}
         >
@@ -127,7 +120,9 @@ const TableArrayControl: React.FC<
         </Button>
       </Box>
       {!isValid && (
-        <Text className={divClassNames} c='red' size='sm' mb='xs'>{errors}</Text>
+        <Text className={divClassNames} c="red" size="sm" mb="xs">
+          {errors}
+        </Text>
       )}
       <Table className={tableClass} striped highlightOnHover>
         <Table.Thead>
@@ -137,12 +132,8 @@ const TableArrayControl: React.FC<
                 const props = schema.properties;
                 return fpflow(
                   fpkeys,
-                  fpfilter((prop) => props[prop].type !== 'array'),
-                  fpmap((prop) => (
-                    <Table.Th key={prop}>
-                      {props[prop].title ?? fpstartCase(prop)}
-                    </Table.Th>
-                  ))
+                  fpfilter((prop) => props[prop].type !== "array"),
+                  fpmap((prop) => <Table.Th key={prop}>{props[prop].title ?? fpstartCase(prop)}</Table.Th>),
                 )(props);
               })()
             ) : (
@@ -165,10 +156,11 @@ const TableArrayControl: React.FC<
                 return errorPath.startsWith(childPath);
               });
 
-              const validationClassName = getStyleAsClassName?.('array.validation') ?? 'array.validation';
-              const errorValidationClassName = getStyleAsClassName?.('array.validation.error') ?? 'array.validation.error';
+              const validationClassName = getStyleAsClassName?.("array.validation") ?? "array.validation";
+              const errorValidationClassName =
+                getStyleAsClassName?.("array.validation.error") ?? "array.validation.error";
               const errorClassNames = errorsPerEntry
-                ? [validationClassName].concat(errorValidationClassName).join(' ')
+                ? [validationClassName].concat(errorValidationClassName).join(" ")
                 : validationClassName;
 
               return (
@@ -178,48 +170,45 @@ const TableArrayControl: React.FC<
                       const props = schema.properties;
                       return fpflow(
                         fpkeys,
-                        fpfilter((prop) => props[prop].type !== 'array'),
+                        fpfilter((prop) => props[prop].type !== "array"),
                         fpmap((prop) => {
                           const childPropPath = Paths.compose(childPath, prop.toString());
                           return (
                             <Table.Td key={childPropPath}>
                               <DispatchCell
-                                schema={Resolve.schema(
-                                  schema,
-                                  `#/properties/${encode(prop)}`,
-                                  rootSchema
-                                )}
+                                schema={Resolve.schema(schema, `#/properties/${encode(prop)}`, rootSchema)}
                                 uischema={createControlElement(encode(prop))}
-                                path={childPath + '.' + prop}
+                                path={childPath + "." + prop}
                               />
                             </Table.Td>
                           );
-                        })
+                        }),
                       )(props);
                     })()
                   ) : (
                     <Table.Td key={Paths.compose(childPath, index.toString())}>
-                      <DispatchCell
-                        schema={schema}
-                        uischema={createControlElement()}
-                        path={childPath}
-                      />
+                      <DispatchCell schema={schema} uischema={createControlElement()} path={childPath} />
                     </Table.Td>
                   )}
                   <Table.Td>
                     {errorsPerEntry ? (
-                      <Text className={errorClassNames} size='sm'>
-                        {join(errorsPerEntry.map((e) => e.message), ' and ')}
+                      <Text className={errorClassNames} size="sm">
+                        {join(
+                          errorsPerEntry.map((e) => e.message),
+                          " and ",
+                        )}
                       </Text>
                     ) : (
-                      <Text className={errorClassNames} size='sm'>OK</Text>
+                      <Text className={errorClassNames} size="sm">
+                        OK
+                      </Text>
                     )}
                   </Table.Td>
                   <Table.Td>
                     <Button
-                      variant='subtle'
-                      color='red'
-                      size='xs'
+                      variant="subtle"
+                      color="red"
+                      size="xs"
                       disabled={!enabled}
                       aria-label={translations.removeAriaLabel}
                       onClick={() => {
@@ -242,7 +231,5 @@ const TableArrayControl: React.FC<
 };
 
 export default withVanillaControlProps(
-  withJsonFormsArrayControlProps(
-    withTranslateProps(withArrayTranslationProps(TableArrayControl))
-  )
+  withJsonFormsArrayControlProps(withTranslateProps(withArrayTranslationProps(TableArrayControl))),
 );

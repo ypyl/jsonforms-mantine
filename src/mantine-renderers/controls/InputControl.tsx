@@ -35,12 +35,18 @@ import {
   DispatchCell,
   withJsonFormsControlProps,
 } from '@jsonforms/react';
-import { Input } from '@mantine/core';
+import { Box, Input } from '@mantine/core';
 import merge from 'lodash/merge';
+import { withVanillaControlProps } from '../util';
+import type { VanillaRendererProps } from '../index';
 
-export class InputControl extends Control<ControlProps, ControlState> {
+export class InputControl extends Control<
+  ControlProps & VanillaRendererProps,
+  ControlState
+> {
   render() {
     const {
+      classNames,
       description,
       id,
       errors,
@@ -80,21 +86,28 @@ export class InputControl extends Control<ControlProps, ControlState> {
     }
 
     return (
-      <Input.Wrapper
-        id={id}
-        label={computeLabel(label, required ?? false, appliedUiSchemaOptions.hideRequiredAsterisk)}
-        description={showDescription ? description : undefined}
-        error={!isValid ? errors : undefined}
-        withAsterisk={required}
+      <Box
+        className={classNames?.wrapper}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
       >
-        <DispatchCell
-          uischema={uischema}
-          schema={schema}
-          path={path}
-          id={id + '-input'}
-          enabled={enabled}
-        />
-      </Input.Wrapper>
+        <Input.Wrapper
+          id={id}
+          label={computeLabel(label, required ?? false, appliedUiSchemaOptions.hideRequiredAsterisk)}
+          description={showDescription ? description : undefined}
+          error={!isValid ? errors : undefined}
+          withAsterisk={required}
+          className={classNames?.label}
+        >
+          <DispatchCell
+            uischema={uischema}
+            schema={schema}
+            path={path}
+            id={id + '-input'}
+            enabled={enabled}
+          />
+        </Input.Wrapper>
+      </Box>
     );
   }
 
@@ -116,4 +129,4 @@ export class InputControl extends Control<ControlProps, ControlState> {
 
 export const inputControlTester: RankedTester = rankWith(1, isControl);
 
-export default withJsonFormsControlProps(InputControl);
+export default withVanillaControlProps(withJsonFormsControlProps(InputControl));

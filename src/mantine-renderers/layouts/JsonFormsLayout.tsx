@@ -22,17 +22,21 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
+import { type RendererProps } from '@jsonforms/core';
+import { type VanillaRendererProps, type WithChildren } from '../index';
 import { Box } from '@mantine/core';
 
 export const JsonFormsLayout = ({
+  className,
   children,
   visible,
-}: {
-  children: React.ReactNode;
-  visible?: boolean;
-}) => {
-  if (visible === false) {
-    return null;
-  }
-  return <Box>{children}</Box>;
+}: RendererProps & VanillaRendererProps & WithChildren) => {
+  return (
+    <Box
+      className={className}
+      hidden={visible === undefined || visible === null ? false : !visible}
+    >
+      {children}
+    </Box>
+  );
 };
