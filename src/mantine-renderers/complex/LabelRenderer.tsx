@@ -22,31 +22,30 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React, { type FunctionComponent } from 'react';
+import React from 'react';
 import { type LabelProps, type RankedTester, rankWith, uiTypeIs } from '@jsonforms/core';
 import { withJsonFormsLabelProps } from '@jsonforms/react';
+import { Title } from '@mantine/core';
 import type { VanillaRendererProps } from '../index';
 import { withVanillaControlProps } from '../util';
 
-/**
- * Default tester for a label.
- * @type {RankedTester}
- */
 export const labelRendererTester: RankedTester = rankWith(1, uiTypeIs('Label'));
 
-/**
- * Default renderer for a label.
- */
-export const LabelRenderer: FunctionComponent<
-  LabelProps & VanillaRendererProps
-> = ({ text, visible, getStyleAsClassName }) => {
-  const classNames = getStyleAsClassName('label-control');
-  const isHidden = !visible;
+export const LabelRenderer: React.FC<LabelProps & VanillaRendererProps> = ({
+  text,
+  visible,
+  getStyleAsClassName,
+}) => {
+  const className = getStyleAsClassName?.('label-control') ?? '';
+
+  if (visible === false) {
+    return null;
+  }
 
   return (
-    <label hidden={isHidden} className={classNames}>
+    <Title order={4} className={className}>
       {text}
-    </label>
+    </Title>
   );
 };
 
