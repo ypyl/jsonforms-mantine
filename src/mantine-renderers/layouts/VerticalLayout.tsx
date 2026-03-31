@@ -52,7 +52,11 @@ const VerticalLayoutRendererComponent: React.FC<RendererProps & VanillaRendererP
   getStyleAsClassName,
 }) {
   const verticalLayout = uischema as VerticalLayoutSchema;
+  const elementsSize = verticalLayout.elements?.length ?? 0;
   const layoutClassName = getStyleAsClassName?.('vertical.layout') ?? '';
+  const childClassNames = ['vertical-layout-item']
+    .concat(getStyle?.('vertical.layout.item', elementsSize) ?? [])
+    .join(' ');
 
   if (visible === false) {
     return null;
@@ -69,8 +73,8 @@ const VerticalLayoutRendererComponent: React.FC<RendererProps & VanillaRendererP
       getStyle={getStyle}
       getStyleAsClassName={getStyleAsClassName}
     >
-      <Stack gap="sm">
-        {renderChildren(verticalLayout, schema, path, enabled)}
+      <Stack gap="xs">
+        {renderChildren(verticalLayout, schema, childClassNames, path, enabled)}
       </Stack>
     </JsonFormsLayout>
   );

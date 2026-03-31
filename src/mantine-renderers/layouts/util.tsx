@@ -25,10 +25,19 @@
 import isEmpty from 'lodash/isEmpty';
 import type { JsonSchema, Layout } from '@jsonforms/core';
 import { JsonFormsDispatch, useJsonForms } from '@jsonforms/react';
+import { Box } from '@mantine/core';
+
+export interface RenderChildrenProps {
+  layout: Layout;
+  schema: JsonSchema;
+  className: string;
+  path: string;
+}
 
 export const renderChildren = (
   layout: Layout,
   schema: JsonSchema,
+  className: string,
   path: string,
   enabled: boolean
 ) => {
@@ -38,15 +47,18 @@ export const renderChildren = (
 
   const { renderers, cells } = useJsonForms();
 
-  return layout.elements.map((child, index) => (
-    <JsonFormsDispatch
-      key={`${path}-${index}`}
-      renderers={renderers}
-      cells={cells}
-      uischema={child}
-      schema={schema}
-      path={path}
-      enabled={enabled}
-    />
-  ));
+  return layout.elements.map((child, index) => {
+    return (
+      <Box className={className} key={`${path}-${index}`}>
+        <JsonFormsDispatch
+          renderers={renderers}
+          cells={cells}
+          uischema={child}
+          schema={schema}
+          path={path}
+          enabled={enabled}
+        />
+      </Box>
+    );
+  });
 };

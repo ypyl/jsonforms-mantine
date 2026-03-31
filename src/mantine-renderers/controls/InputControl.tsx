@@ -26,7 +26,7 @@ import maxBy from "lodash/maxBy";
 import type { ControlProps, ControlState, RankedTester } from "@jsonforms/core";
 import { computeLabel, isControl, NOT_APPLICABLE, rankWith } from "@jsonforms/core";
 import { Control, DispatchCell, withJsonFormsControlProps } from "@jsonforms/react";
-import { Box, Input } from "@mantine/core";
+import { Box, Input, Space } from "@mantine/core";
 import merge from "lodash/merge";
 import { withVanillaControlProps } from "../util";
 import type { VanillaRendererProps } from "../index";
@@ -75,10 +75,11 @@ export class InputControl extends Control<ControlProps & VanillaRendererProps, C
         <Input.Wrapper
           id={id}
           label={computeLabel(label, required ?? false, appliedUiSchemaOptions.hideRequiredAsterisk)}
-          description={showDescription ? description : undefined}
+          description={showDescription ? description : isValid ? <Space h="md" /> : undefined}
           error={!isValid ? errors : undefined}
           withAsterisk={required}
           className={classNames?.label}
+          inputWrapperOrder={["label", "input", "description", "error"]}
         >
           <DispatchCell uischema={uischema} schema={schema} path={path} id={id + "-input"} enabled={enabled} />
         </Input.Wrapper>
