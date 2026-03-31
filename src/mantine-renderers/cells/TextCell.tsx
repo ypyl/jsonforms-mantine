@@ -25,7 +25,7 @@
 import type { CellProps, RankedTester } from '@jsonforms/core';
 import { isStringControl, rankWith } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
-import { TextInput } from '@mantine/core';
+import { PasswordInput, TextInput } from '@mantine/core';
 import merge from 'lodash/merge';
 import type { VanillaRendererProps } from '../index';
 import { withVanillaCellProps } from '../util/index';
@@ -44,9 +44,26 @@ export const TextCell = (props: CellProps & VanillaRendererProps) => {
   } = props;
   const maxLength = schema.maxLength;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const isPassword = appliedUiSchemaOptions.format === 'password';
 
   if (props.visible === false) {
     return null;
+  }
+
+  if (isPassword) {
+    return (
+      <PasswordInput
+        className={className}
+        id={id}
+        value={data ?? ''}
+        onChange={(event) =>
+          handleChange(path, event.currentTarget.value === '' ? undefined : event.currentTarget.value)
+        }
+        disabled={!enabled}
+        placeholder={appliedUiSchemaOptions.placeholder}
+        autoFocus={appliedUiSchemaOptions.focus}
+      />
+    );
   }
 
   return (
@@ -60,7 +77,6 @@ export const TextCell = (props: CellProps & VanillaRendererProps) => {
       disabled={!enabled}
       placeholder={appliedUiSchemaOptions.placeholder}
       maxLength={appliedUiSchemaOptions.restrict ? maxLength : undefined}
-      type={appliedUiSchemaOptions.format === 'password' ? 'password' : 'text'}
       autoFocus={appliedUiSchemaOptions.focus}
     />
   );
