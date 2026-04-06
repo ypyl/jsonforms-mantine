@@ -22,7 +22,6 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React from 'react';
 import {
   type CellProps,
   isDateTimeControl,
@@ -30,31 +29,29 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
+import { DateTimePicker } from '@mantine/dates';
 import type { VanillaRendererProps } from '../index';
 import { withVanillaCellProps } from '../util/index';
 
 export const DateTimeCell = (props: CellProps & VanillaRendererProps) => {
   const { data, className, id, enabled, uischema, path, handleChange } = props;
-  const toISOString = (inputDateTime: string) => {
-    return inputDateTime === '' ? '' : inputDateTime + ':00.000Z';
-  };
+
+  if (props.visible === false) {
+    return null;
+  }
 
   return (
-    <input
-      type='datetime-local'
-      value={(data || '').substr(0, 16)}
-      onChange={(ev) => handleChange(path, toISOString(ev.target.value))}
+    <DateTimePicker
       className={className}
       id={id}
+      value={data ?? null}
+      onChange={(newValue) => handleChange(path, newValue ?? undefined)}
       disabled={!enabled}
-      autoFocus={uischema.options && uischema.options.focus}
+      autoFocus={uischema?.options?.focus}
     />
   );
 };
-/**
- * Default tester for datetime controls.
- * @type {RankedTester}
- */
+
 export const dateTimeCellTester: RankedTester = rankWith(2, isDateTimeControl);
 
 export default withJsonFormsCellProps(withVanillaCellProps(DateTimeCell));
