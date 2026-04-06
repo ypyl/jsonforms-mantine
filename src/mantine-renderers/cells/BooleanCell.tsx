@@ -25,7 +25,7 @@
 import type { CellProps, RankedTester } from '@jsonforms/core';
 import { isBooleanControl, rankWith } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
-import { Checkbox } from '@mantine/core';
+import { Checkbox, Switch } from '@mantine/core';
 import type { VanillaRendererProps } from '../index';
 
 export const BooleanCell = (props: CellProps & VanillaRendererProps) => {
@@ -33,6 +33,18 @@ export const BooleanCell = (props: CellProps & VanillaRendererProps) => {
 
   if (props.visible === false) {
     return null;
+  }
+
+  if (uischema?.options?.toggle) {
+    return (
+      <Switch
+        className={className}
+        id={id}
+        checked={!!data}
+        onChange={(event) => handleChange(path, event.currentTarget.checked)}
+        disabled={!enabled}
+      />
+    );
   }
 
   return (

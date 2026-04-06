@@ -22,33 +22,37 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React from 'react';
-import {
-  type CellProps,
-  isMultiLineControl,
-  type RankedTester,
-  rankWith,
-} from '@jsonforms/core';
+import type { CellProps, RankedTester } from '@jsonforms/core';
+import { isMultiLineControl, rankWith } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
+import { Textarea } from '@mantine/core';
+import merge from 'lodash/merge';
 import type { VanillaRendererProps } from '../index';
 import { withVanillaCellProps } from '../util/index';
-import merge from 'lodash/merge';
 
 export const TextAreaCell = (props: CellProps & VanillaRendererProps) => {
-  const { data, className, id, enabled, config, uischema, path, handleChange } =
-    props;
+  const { data, className, id, enabled, config, uischema, schema, path, handleChange } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const maxLength = schema.maxLength;
+
+  if (props.visible === false) {
+    return null;
+  }
+
   return (
-    <textarea
-      value={data || ''}
-      onChange={(ev) =>
-        handleChange(path, ev.target.value === '' ? undefined : ev.target.value)
-      }
+    <Textarea
       className={className}
       id={id}
+      value={data ?? ''}
+      onChange={(event) =>
+        handleChange(path, event.currentTarget.value === '' ? undefined : event.currentTarget.value)
+      }
       disabled={!enabled}
-      autoFocus={appliedUiSchemaOptions.focus}
       placeholder={appliedUiSchemaOptions.placeholder}
+      autoFocus={appliedUiSchemaOptions.focus}
+      maxLength={appliedUiSchemaOptions.restrict ? maxLength : undefined}
+      autosize={appliedUiSchemaOptions.multi}
+      minRows={2}
     />
   );
 };

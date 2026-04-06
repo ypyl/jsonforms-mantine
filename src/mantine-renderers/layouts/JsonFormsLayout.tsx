@@ -24,7 +24,7 @@
 */
 import { type RendererProps } from '@jsonforms/core';
 import { type VanillaRendererProps, type WithChildren } from '../index';
-import { Box } from '@mantine/core';
+import { Box, Slider } from '@mantine/core';
 
 export const JsonFormsLayout = ({
   className,
@@ -32,11 +32,14 @@ export const JsonFormsLayout = ({
   visible,
 }: RendererProps & VanillaRendererProps & WithChildren) => {
   return (
+    <>
     <Box
       className={className}
       hidden={visible === undefined || visible === null ? false : !visible}
     >
       {children}
+
     </Box>
+    </>
   );
 };

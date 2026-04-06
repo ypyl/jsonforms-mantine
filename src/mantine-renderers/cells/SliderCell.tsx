@@ -22,7 +22,6 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React from 'react';
 import {
   type CellProps,
   isRangeControl,
@@ -30,29 +29,28 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
+import { Slider } from '@mantine/core';
 import type { VanillaRendererProps } from '../index';
 import { withVanillaCellProps } from '../util/index';
 
 export const SliderCell = (props: CellProps & VanillaRendererProps) => {
-  const { data, className, id, enabled, uischema, schema, path, handleChange } =
-    props;
+  const { data, className, id, enabled, uischema, schema, path, handleChange } = props;
+
+  if (props.visible === false) {
+    return null;
+  }
 
   return (
-    <div style={{ display: 'flex' }}>
-      <input
-        type='range'
-        max={schema.maximum}
-        min={schema.minimum}
-        value={data || schema.default}
-        onChange={(ev) => handleChange(path, Number(ev.target.value))}
-        className={className}
-        id={id}
-        disabled={!enabled}
-        autoFocus={uischema.options && uischema.options.focus}
-        style={{ flex: '1' }}
-      />
-      <label style={{ marginLeft: '0.5em' }}>{data || schema.default}</label>
-    </div>
+    <Slider
+      className={className}
+      id={id}
+      value={data ?? schema.default}
+      onChange={(value) => handleChange(path, value)}
+      disabled={!enabled}
+      autoFocus={uischema?.options?.focus}
+      min={schema.minimum}
+      max={schema.maximum}
+    />
   );
 };
 

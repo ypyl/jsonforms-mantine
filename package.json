@@ -12,7 +12,7 @@
   "dependencies": {
     "@jsonforms/core": "3.7.0",
     "@jsonforms/react": "3.7.0",
-    "@mantine/core": "9.0.0 ",
+    "@mantine/core": "9.0.1",
     "@mantine/dates": "9.0.0 ",
     "@mantine/hooks": "9.0.0 ",
     "@tabler/icons-react": "^3.41.1",
