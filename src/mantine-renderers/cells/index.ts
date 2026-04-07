@@ -25,7 +25,6 @@
 import DateCell, { dateCellTester } from './DateCell';
 import DateTimeCell, { dateTimeCellTester } from './DateTimeCell';
 import EnumCell, { enumCellTester } from './EnumCell';
-import IntegerCell, { integerCellTester } from './IntegerCell';
 import NumberFormatCell, { numberFormatCellTester } from './NumberFormatCell';
 import OneOfEnumCell, { oneOfEnumCellTester } from './OneOfEnumCell';
 import TimeCell, { timeCellTester } from './TimeCell';
@@ -38,8 +37,6 @@ export {
   dateTimeCellTester,
   EnumCell,
   enumCellTester,
-  IntegerCell,
-  integerCellTester,
   NumberFormatCell,
   numberFormatCellTester,
   OneOfEnumCell,
