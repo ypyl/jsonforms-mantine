@@ -81,6 +81,6 @@ export const TextAreaControl = (props: ControlProps & VanillaRendererProps) => {
   );
 };
 
-export const textAreaControlTester: RankedTester = rankWith(2, isMultiLineControl);
+export const textAreaControlTester: RankedTester = rankWith(3, isMultiLineControl);
 
 export default withVanillaControlProps(withJsonFormsControlProps(TextAreaControl));

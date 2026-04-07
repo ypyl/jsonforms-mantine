@@ -27,5 +27,4 @@ export { DateTimeCell } from './DateTimeCell';
 export { EnumCell } from './EnumCell';
 export { IntegerCell } from './IntegerCell';
 export { NumberFormatCell } from './NumberFormatCell';
-export { SliderCell } from './SliderCell';
 export { TimeCell } from './TimeCell';

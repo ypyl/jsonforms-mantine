@@ -22,38 +22,53 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import {
-  type CellProps,
-  isRangeControl,
-  type RankedTester,
-  rankWith,
-} from '@jsonforms/core';
-import { withJsonFormsCellProps } from '@jsonforms/react';
-import { Slider } from '@mantine/core';
+import type { ControlProps, RankedTester } from '@jsonforms/core';
+import { isRangeControl, rankWith } from '@jsonforms/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
+import { Box, Slider, Text } from '@mantine/core';
+import { withVanillaControlProps } from '../util';
 import type { VanillaRendererProps } from '../index';
-import { withVanillaCellProps } from '../util/index';
 
-export const SliderCell = (props: CellProps & VanillaRendererProps) => {
-  const { data, className, id, enabled, uischema, schema, path, handleChange } = props;
+export const SliderControl = (props: ControlProps & VanillaRendererProps) => {
+  const {
+    id,
+    data,
+    label,
+    description,
+    errors,
+    enabled,
+    visible,
+    uischema,
+    schema,
+    path,
+    handleChange,
+    classNames,
+  } = props;
 
-  if (props.visible === false) {
+  if (visible === false) {
     return null;
   }
 
+  const isValid = !errors || errors.length === 0;
+
   return (
-    <Slider
-      className={className}
-      id={id}
-      value={data ?? schema.default}
-      onChange={(value) => handleChange(path, value)}
-      disabled={!enabled}
-      autoFocus={uischema?.options?.focus}
-      min={schema.minimum}
-      max={schema.maximum}
-    />
+    <Box className={classNames?.wrapper}>
+      <Slider
+        id={id}
+        label={label}
+        value={data ?? schema.default}
+        onChange={(value) => handleChange(path, value)}
+        disabled={!enabled}
+        autoFocus={uischema?.options?.focus}
+        min={schema.minimum}
+        max={schema.maximum}
+      />
+      {!isValid && <Text size="xs" c="red">{errors}</Text>}
+      {description && isValid && <Text size="xs">{description}</Text>}
+    </Box>
   );
 };
 
-export const sliderCellTester: RankedTester = rankWith(4, isRangeControl);
+export const sliderControlTester: RankedTester = rankWith(4, isRangeControl);
 
-export default withJsonFormsCellProps(withVanillaCellProps(SliderCell));
+export default withVanillaControlProps(withJsonFormsControlProps(SliderControl));
