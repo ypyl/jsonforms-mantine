@@ -24,6 +24,7 @@
 */
 import BooleanControl, { booleanControlTester } from './BooleanControl';
 import DateControl, { dateControlTester } from './DateControl';
+import DateTimeControl, { dateTimeControlTester } from './DateTimeControl';
 import EnumControl, { enumControlTester } from './EnumControl';
 import InputControl, { inputControlTester } from './InputControl';
 import IntegerControl, { integerControlTester } from './IntegerControl';
@@ -43,6 +44,8 @@ export {
   booleanControlTester,
   DateControl,
   dateControlTester,
+  DateTimeControl,
+  dateTimeControlTester,
   EnumControl,
   enumControlTester,
   InputControl,
