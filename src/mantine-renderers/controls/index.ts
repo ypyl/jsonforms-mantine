@@ -22,6 +22,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
+import BooleanControl, { booleanControlTester } from './BooleanControl';
 import InputControl, { inputControlTester } from './InputControl';
 import RadioGroupControl, {
   radioGroupControlTester,
@@ -30,6 +31,8 @@ import OneOfRadioGroupControl, {
   oneOfRadioGroupControlTester,
 } from './OneOfRadioGroupControl';
 export {
+  BooleanControl,
+  booleanControlTester,
   InputControl,
   inputControlTester,
   RadioGroupControl,

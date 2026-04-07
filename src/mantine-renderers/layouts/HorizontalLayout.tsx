@@ -71,7 +71,7 @@ const HorizontalLayoutRendererComponent: React.FC<RendererProps & VanillaRendere
         getStyle={getStyle}
         getStyleAsClassName={getStyleAsClassName}
       >
-        <Group gap="xs" align="flex-start">
+        <Group gap="lg" align="flex-start">
           {renderChildren(horizontalLayout, schema, childClassNames, path, enabled)}
         </Group>
       </JsonFormsLayout>

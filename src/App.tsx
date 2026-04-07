@@ -1,47 +1,97 @@
 import { useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
 import { mantineRenderers, mantineCells } from './mantine-renderers';
-import { Container, Title, Card, Stack, Button, Group, Tabs, Slider } from '@mantine/core';
+import { Container, Title, Card, Stack, Button, Group, Tabs } from '@mantine/core';
 import { schema as basicSchema, uischema as basicUischema, initialData as basicInitialData, type BasicFormData } from './examples/basic';
 import { schema as complexSchema, uischema as complexUischema, initialData as complexInitialData, type ComplexFormData } from './examples/complex';
 import { schema as allTypesSchema, uischema as allTypesUischema, initialData as allTypesInitialData, type AllTypesFormData } from './examples/allTypes';
 import { schema as optionsSchema, uischema as optionsUischema, initialData as optionsInitialData, type OptionsFormData } from './examples/options';
+import { schema as categorizationSchema, uischema as categorizationUischema, initialData as categorizationInitialData, type CategorizationFormData } from './examples/categorization';
 
 function App() {
   const [basicData, setBasicData] = useState<BasicFormData>(basicInitialData);
   const [complexData, setComplexData] = useState<ComplexFormData>(complexInitialData);
   const [allTypesData, setAllTypesData] = useState<AllTypesFormData>(allTypesInitialData);
   const [optionsData, setOptionsData] = useState<OptionsFormData>(optionsInitialData);
+  const [categorizationData, setCategorizationData] = useState<CategorizationFormData>(categorizationInitialData);
 
   return (
     <Container size="sm" py="xl" fluid>
       <Stack gap="xl">
         <Title order={2}>JSON Forms + Mantine POC</Title>
-        <Tabs defaultValue="allTypes">
+        <Tabs defaultValue="basic">
           <Tabs.List>
-            <Tabs.Tab value="allTypes">All Types Example</Tabs.Tab>
-            <Tabs.Tab value="complex">Complex Example</Tabs.Tab>
             <Tabs.Tab value="basic">Basic Example</Tabs.Tab>
-            <Tabs.Tab value="options">Options Example</Tabs.Tab>
+            <Tabs.Tab value="controls">Controls</Tabs.Tab>
+            <Tabs.Tab value="categorization">Categorization Example</Tabs.Tab>
+            <Tabs.Tab value="complex">Complex Example</Tabs.Tab>
           </Tabs.List>
-          <Tabs.Panel value="allTypes" pt="md">
+          <Tabs.Panel value="controls" pt="md">
+            <Tabs variant='pills' defaultValue="allTypes">
+              <Tabs.List>
+                <Tabs.Tab value="allTypes">All Types Example</Tabs.Tab>
+                <Tabs.Tab value="options">Options Example</Tabs.Tab>
+              </Tabs.List>
+              <Tabs.Panel value="allTypes" pt="md">
+                <Card shadow="sm" padding="lg">
+                  <JsonForms
+                    schema={allTypesSchema}
+                    uischema={allTypesUischema}
+                    data={allTypesData}
+                    renderers={mantineRenderers}
+                    cells={mantineCells}
+                    onChange={({ data }) => setAllTypesData(data)}
+                  />
+                </Card>
+                <Card shadow="sm" padding="lg" mt="md">
+                  <Title order={4}>Current Data</Title>
+                  <pre>{JSON.stringify(allTypesData, null, 2)}</pre>
+                </Card>
+                <Group mt="md">
+                  <Button onClick={() => setAllTypesData(allTypesInitialData)}>Reset</Button>
+                  <Button onClick={() => setAllTypesData({} as AllTypesFormData)} variant="outline">Clear</Button>
+                </Group>
+              </Tabs.Panel>
+              <Tabs.Panel value="options" pt="md">
+                <Card shadow="sm" padding="lg">
+                  <JsonForms
+                    schema={optionsSchema}
+                    uischema={optionsUischema}
+                    data={optionsData}
+                    renderers={mantineRenderers}
+                    cells={mantineCells}
+                    onChange={({ data }) => setOptionsData(data)}
+                  />
+                </Card>
+                <Card shadow="sm" padding="lg" mt="md">
+                  <Title order={4}>Current Data</Title>
+                  <pre>{JSON.stringify(optionsData, null, 2)}</pre>
+                </Card>
+                <Group mt="md">
+                  <Button onClick={() => setOptionsData(optionsInitialData)}>Reset</Button>
+                  <Button onClick={() => setOptionsData({} as OptionsFormData)} variant="outline">Clear</Button>
+                </Group>
+              </Tabs.Panel>
+            </Tabs>
+          </Tabs.Panel>
+          <Tabs.Panel value="categorization" pt="md">
             <Card shadow="sm" padding="lg">
               <JsonForms
-                schema={allTypesSchema}
-                uischema={allTypesUischema}
-                data={allTypesData}
+                schema={categorizationSchema}
+                uischema={categorizationUischema}
+                data={categorizationData}
                 renderers={mantineRenderers}
                 cells={mantineCells}
-                onChange={({ data }) => setAllTypesData(data)}
+                onChange={({ data }) => setCategorizationData(data)}
               />
             </Card>
             <Card shadow="sm" padding="lg" mt="md">
               <Title order={4}>Current Data</Title>
-              <pre>{JSON.stringify(allTypesData, null, 2)}</pre>
+              <pre>{JSON.stringify(categorizationData, null, 2)}</pre>
             </Card>
             <Group mt="md">
-              <Button onClick={() => setAllTypesData(allTypesInitialData)}>Reset</Button>
-              <Button onClick={() => setAllTypesData({} as AllTypesFormData)} variant="outline">Clear</Button>
+              <Button onClick={() => setCategorizationData(categorizationInitialData)}>Reset</Button>
+              <Button onClick={() => setCategorizationData({} as CategorizationFormData)} variant="outline">Clear</Button>
             </Group>
           </Tabs.Panel>
           <Tabs.Panel value="complex" pt="md">
@@ -82,27 +132,6 @@ function App() {
             <Group mt="md">
               <Button onClick={() => setBasicData(basicInitialData)}>Reset</Button>
               <Button onClick={() => setBasicData({} as BasicFormData)} variant="outline">Clear</Button>
-            </Group>
-          </Tabs.Panel>
-          <Tabs.Panel value="options" pt="md">
-            <Card shadow="sm" padding="lg">
-              <JsonForms
-                schema={optionsSchema}
-                uischema={optionsUischema}
-                data={optionsData}
-                renderers={mantineRenderers}
-                cells={mantineCells}
-                onChange={({ data }) => setOptionsData(data)}
-              />
-
-            </Card>
-            <Card shadow="sm" padding="lg" mt="md">
-              <Title order={4}>Current Data</Title>
-              <pre>{JSON.stringify(optionsData, null, 2)}</pre>
-            </Card>
-            <Group mt="md">
-              <Button onClick={() => setOptionsData(optionsInitialData)}>Reset</Button>
-              <Button onClick={() => setOptionsData({} as OptionsFormData)} variant="outline">Clear</Button>
             </Group>
           </Tabs.Panel>
         </Tabs>

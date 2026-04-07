@@ -73,7 +73,7 @@ const VerticalLayoutRendererComponent: React.FC<RendererProps & VanillaRendererP
       getStyle={getStyle}
       getStyleAsClassName={getStyleAsClassName}
     >
-      <Stack gap="xs">
+      <Stack gap="md">
         {renderChildren(verticalLayout, schema, childClassNames, path, enabled)}
       </Stack>
     </JsonFormsLayout>

@@ -51,6 +51,8 @@ import {
 } from './cells';
 
 import {
+  BooleanControl,
+  booleanControlTester,
   InputControl,
   inputControlTester,
   RadioGroupControl,
@@ -80,6 +82,7 @@ import {
 } from './layouts';
 
 export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
+  { tester: booleanControlTester, renderer: BooleanControl },
   { tester: inputControlTester, renderer: InputControl },
   { tester: radioGroupControlTester, renderer: RadioGroupControl },
   { tester: oneOfRadioGroupControlTester, renderer: OneOfRadioGroupControl },
