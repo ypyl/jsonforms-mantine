@@ -22,17 +22,22 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { Categorization, Category, LayoutProps } from '@jsonforms/core';
 import {
   type TranslateProps,
   withJsonFormsLayoutProps,
   withTranslateProps,
 } from '@jsonforms/react';
-import { CategorizationList } from './CategorizationList';
+import { Tabs } from '@mantine/core';
+import { isCategorization } from './tester';
 import { SingleCategory } from './SingleCategory';
 import { withAjvProps, withVanillaControlProps } from '../../util';
 import type { AjvProps, VanillaRendererProps } from '../../util';
+import {
+  deriveLabelForUISchemaElement,
+  isVisible,
+} from '@jsonforms/core';
 
 export interface CategorizationState {
   selectedCategory: Category;
@@ -62,59 +67,68 @@ export const CategorizationRenderer = ({
   AjvProps) => {
   const categorization = uischema as Categorization;
   const elements = categorization.elements as (Category | Categorization)[];
-  const classNames = getStyleAsClassName('categorization');
-  const masterClassNames = getStyleAsClassName('categorization.master');
-  const detailClassNames = getStyleAsClassName('categorization.detail');
-  const subcategoriesClassName = getStyleAsClassName('category.subcategories');
-  const groupClassName = getStyleAsClassName('category.group');
 
   const [previousCategorization, setPreviousCategorization] =
     useState<Categorization>(uischema as Categorization);
-  const [activeCategory, setActiveCategory] = useState<number>(selected ?? 0);
+  const [activeTab, setActiveTab] = useState<string>(String(selected ?? 0));
 
-  const safeCategory =
-    activeCategory >= categorization.elements.length ? 0 : activeCategory;
+  const activeCategoryIndex =
+    activeTab === undefined ? 0 : parseInt(activeTab, 10);
+
+  const safeCategoryIndex =
+    activeCategoryIndex >= elements.length ? 0 : activeCategoryIndex;
 
   if (categorization !== previousCategorization) {
-    setActiveCategory(0);
+    setActiveTab('0');
     setPreviousCategorization(categorization);
   }
 
-  const onCategorySelected = (categoryIndex: number) => () => {
+  const visibleElements = elements.filter((el) =>
+    isVisible(el, data, undefined, ajv, config)
+  );
+
+  const handleTabChange = (newValue: string | null) => {
+    if (newValue === null) return;
     if (onChange) {
-      return onChange(categoryIndex, safeCategory);
+      return onChange(parseInt(newValue, 10), safeCategoryIndex);
     }
-    return setActiveCategory(categoryIndex);
+    return setActiveTab(newValue);
   };
 
+  if (visible === false) return null;
+
   return (
-    <div
-      className={classNames}
-      hidden={visible === null || visible === undefined ? false : !visible}
+    <Tabs
+      value={activeTab}
+      onChange={handleTabChange}
+      className={getStyleAsClassName('categorization')}
     >
-      <div className={masterClassNames}>
-        <CategorizationList
-          elements={elements}
-          selectedCategory={elements[safeCategory] as Category}
-          data={data}
-          ajv={ajv}
-          config={config}
-          depth={0}
-          onSelect={onCategorySelected}
-          subcategoriesClassName={subcategoriesClassName}
-          groupClassName={groupClassName}
-          t={t}
-        />
-      </div>
-      <div className={detailClassNames}>
-        <SingleCategory
-          category={elements[safeCategory] as Category}
-          schema={schema}
-          path={path}
-          key={safeCategory}
-        />
-      </div>
-    </div>
+      <Tabs.List>
+        {visibleElements.map((element, idx) => {
+          const label = deriveLabelForUISchemaElement(element, t);
+          return (
+            <Tabs.Tab key={idx} value={String(idx)}>
+              {label}
+            </Tabs.Tab>
+          );
+        })}
+      </Tabs.List>
+
+      {visibleElements.map((element, idx) => {
+        if (!isCategorization(element)) {
+          return (
+            <Tabs.Panel key={idx} value={String(idx)}>
+              <SingleCategory
+                category={element as Category}
+                schema={schema}
+                path={path}
+              />
+            </Tabs.Panel>
+          );
+        }
+        return null;
+      })}
+    </Tabs>
   );
 };
 

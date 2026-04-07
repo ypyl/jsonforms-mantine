@@ -64,6 +64,7 @@ export const DateTimeControl = (props: ControlProps & VanillaRendererProps) => {
         onChange={(newValue) => handleChange(path, newValue ?? undefined)}
         disabled={!enabled}
         autoFocus={uischema?.options?.focus}
+        inputWrapperOrder={["label", "input", "description", "error"]}
       />
     </Box>
   );

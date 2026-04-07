@@ -76,6 +76,7 @@ export const IntegerControl = (props: ControlProps & VanillaRendererProps) => {
         step={1}
         allowDecimal={false}
         autoFocus={uischema?.options?.focus}
+        inputWrapperOrder={["label", "input", "description", "error"]}
       />
     </Box>
   );

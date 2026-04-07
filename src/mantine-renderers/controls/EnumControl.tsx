@@ -84,6 +84,7 @@ export const EnumControl = (props: ControlProps & VanillaRendererProps & OwnProp
         clearable
         allowDeselect
         autoFocus={uischema?.options?.focus}
+        inputWrapperOrder={["label", "input", "description", "error"]}
       />
     </Box>
   );

@@ -33,7 +33,7 @@ export interface CategoryProps {
 }
 
 export const SingleCategory = ({ category, schema, path }: CategoryProps) => (
-  <Stack id='categorization.detail'>
+  <Stack id='categorization.detail' p="sm">
     {(category.elements || []).map((child, index) => (
       <JsonFormsDispatch
         key={`${path}-${index}`}

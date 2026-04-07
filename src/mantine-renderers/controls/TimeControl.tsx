@@ -91,6 +91,7 @@ export const TimeControl = (props: ControlProps & VanillaRendererProps) => {
           </ActionIcon>
         }
         ref={ref}
+        inputWrapperOrder={["label", "input", "description", "error"]}
       />
     </Box>
   );

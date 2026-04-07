@@ -75,6 +75,7 @@ export const TextControl = (props: ControlProps & VanillaRendererProps) => {
           disabled={!enabled}
           placeholder={appliedUiSchemaOptions.placeholder}
           autoFocus={appliedUiSchemaOptions.focus}
+          inputWrapperOrder={["label", "input", "description", "error"]}
         />
       </Box>
     );
@@ -94,6 +95,7 @@ export const TextControl = (props: ControlProps & VanillaRendererProps) => {
         placeholder={appliedUiSchemaOptions.placeholder}
         maxLength={appliedUiSchemaOptions.restrict ? maxLength : undefined}
         autoFocus={appliedUiSchemaOptions.focus}
+        inputWrapperOrder={["label", "input", "description", "error"]}
       />
     </Box>
   );

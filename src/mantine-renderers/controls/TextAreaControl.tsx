@@ -76,6 +76,7 @@ export const TextAreaControl = (props: ControlProps & VanillaRendererProps) => {
         maxLength={appliedUiSchemaOptions.restrict ? maxLength : undefined}
         autosize={appliedUiSchemaOptions.multi}
         minRows={2}
+        inputWrapperOrder={["label", "input", "description", "error"]}
       />
     </Box>
   );
