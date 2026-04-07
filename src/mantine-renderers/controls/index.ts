@@ -30,6 +30,7 @@ import RadioGroupControl, {
 import OneOfRadioGroupControl, {
   oneOfRadioGroupControlTester,
 } from './OneOfRadioGroupControl';
+import TextControl, { textControlTester } from './TextControl';
 export {
   BooleanControl,
   booleanControlTester,
@@ -39,4 +40,6 @@ export {
   radioGroupControlTester,
   OneOfRadioGroupControl,
   oneOfRadioGroupControlTester,
+  TextControl,
+  textControlTester,
 };
