@@ -38,8 +38,6 @@ import {
   oneOfEnumCellTester,
   SliderCell,
   sliderCellTester,
-  TextAreaCell,
-  textAreaCellTester,
   TimeCell,
   timeCellTester,
 } from './cells';
@@ -55,6 +53,8 @@ import {
   radioGroupControlTester,
   OneOfRadioGroupControl,
   oneOfRadioGroupControlTester,
+  TextAreaControl,
+  textAreaControlTester,
   TextControl,
   textControlTester,
 } from './controls';
@@ -83,6 +83,7 @@ export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
   { tester: booleanControlTester, renderer: BooleanControl },
   { tester: textControlTester, renderer: TextControl },
   { tester: numberControlTester, renderer: NumberControl },
+  { tester: textAreaControlTester, renderer: TextAreaControl },
   { tester: inputControlTester, renderer: InputControl },
   { tester: radioGroupControlTester, renderer: RadioGroupControl },
   { tester: oneOfRadioGroupControlTester, renderer: OneOfRadioGroupControl },
@@ -102,6 +103,5 @@ export const mantineCells: { tester: RankedTester; cell: any }[] = [
   { tester: integerCellTester, cell: IntegerCell },
   { tester: oneOfEnumCellTester, cell: OneOfEnumCell },
   { tester: sliderCellTester, cell: SliderCell },
-  { tester: textAreaCellTester, cell: TextAreaCell },
   { tester: timeCellTester, cell: TimeCell },
 ];

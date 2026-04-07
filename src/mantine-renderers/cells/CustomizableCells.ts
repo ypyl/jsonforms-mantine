@@ -28,5 +28,4 @@ export { EnumCell } from './EnumCell';
 export { IntegerCell } from './IntegerCell';
 export { NumberFormatCell } from './NumberFormatCell';
 export { SliderCell } from './SliderCell';
-export { TextAreaCell } from './TextAreaCell';
 export { TimeCell } from './TimeCell';
