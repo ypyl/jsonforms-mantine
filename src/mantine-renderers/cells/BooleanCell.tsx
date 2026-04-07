@@ -22,12 +22,43 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-export { DateTimeCell } from './DateTimeCell';
-export { EnumCell } from './EnumCell';
-export { NumberFormatCell } from './NumberFormatCell';
-export { TimeCell } from './TimeCell';
-export { TextCell } from './TextCell';
-export { BooleanCell } from './BooleanCell';
-export { TextAreaCell } from './TextAreaCell';
-export { IntegerCell } from './IntegerCell';
-export { DateCell } from './DateCell';
+import type { CellProps, RankedTester } from '@jsonforms/core';
+import { isBooleanControl, rankWith } from '@jsonforms/core';
+import { withJsonFormsCellProps } from '@jsonforms/react';
+import { Checkbox, Switch } from '@mantine/core';
+import type { VanillaRendererProps } from '../index';
+
+export const BooleanCell = (props: CellProps & VanillaRendererProps) => {
+  const { data, className, id, enabled, uischema, path, handleChange } = props;
+
+  if (props.visible === false) {
+    return null;
+  }
+
+  if (uischema?.options?.toggle) {
+    return (
+      <Switch
+        className={className}
+        id={id}
+        checked={!!data}
+        onChange={(event) => handleChange(path, event.currentTarget.checked)}
+        disabled={!enabled}
+      />
+    );
+  }
+
+  return (
+    <Checkbox
+      className={className}
+      id={id}
+      checked={!!data}
+      onChange={(event) => handleChange(path, event.currentTarget.checked)}
+      disabled={!enabled}
+      autoFocus={uischema?.options?.focus}
+    />
+  );
+};
+
+export const booleanCellTester: RankedTester = rankWith(2, isBooleanControl);
+
+export default withJsonFormsCellProps(BooleanCell);

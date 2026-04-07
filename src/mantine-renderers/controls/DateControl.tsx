@@ -69,6 +69,6 @@ export const DateControl = (props: ControlProps & VanillaRendererProps) => {
   );
 };
 
-export const dateControlTester: RankedTester = rankWith(2, isDateControl);
+export const dateControlTester: RankedTester = rankWith(3, isDateControl);
 
 export default withVanillaControlProps(withJsonFormsControlProps(DateControl));

@@ -81,6 +81,6 @@ export const NumberControl = (props: ControlProps & VanillaRendererProps) => {
   );
 };
 
-export const numberControlTester: RankedTester = rankWith(2, isNumberControl);
+export const numberControlTester: RankedTester = rankWith(3, isNumberControl);
 
 export default withVanillaControlProps(withJsonFormsControlProps(NumberControl));

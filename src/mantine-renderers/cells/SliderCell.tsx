@@ -22,12 +22,38 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-export { DateTimeCell } from './DateTimeCell';
-export { EnumCell } from './EnumCell';
-export { NumberFormatCell } from './NumberFormatCell';
-export { TimeCell } from './TimeCell';
-export { TextCell } from './TextCell';
-export { BooleanCell } from './BooleanCell';
-export { TextAreaCell } from './TextAreaCell';
-export { IntegerCell } from './IntegerCell';
-export { DateCell } from './DateCell';
+import {
+  type CellProps,
+  isRangeControl,
+  type RankedTester,
+  rankWith,
+} from '@jsonforms/core';
+import { withJsonFormsCellProps } from '@jsonforms/react';
+import { Slider } from '@mantine/core';
+import type { VanillaRendererProps } from '../index';
+import { withVanillaCellProps } from '../util/index';
+
+export const SliderCell = (props: CellProps & VanillaRendererProps) => {
+  const { data, className, id, enabled, uischema, schema, path, handleChange } = props;
+
+  if (props.visible === false) {
+    return null;
+  }
+
+  return (
+    <Slider
+      className={className}
+      id={id}
+      value={data ?? schema.default}
+      onChange={(value) => handleChange(path, value)}
+      disabled={!enabled}
+      autoFocus={uischema?.options?.focus}
+      min={schema.minimum}
+      max={schema.maximum}
+    />
+  );
+};
+
+export const sliderCellTester: RankedTester = rankWith(4, isRangeControl);
+
+export default withJsonFormsCellProps(withVanillaCellProps(SliderCell));

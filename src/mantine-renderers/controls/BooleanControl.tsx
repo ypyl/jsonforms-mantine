@@ -89,6 +89,6 @@ export const BooleanControl = (props: ControlProps & VanillaRendererProps) => {
   );
 };
 
-export const booleanControlTester: RankedTester = rankWith(2, isBooleanControl);
+export const booleanControlTester: RankedTester = rankWith(3, isBooleanControl);
 
 export default withVanillaControlProps(withJsonFormsControlProps(BooleanControl));

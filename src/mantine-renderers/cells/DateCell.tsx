@@ -22,12 +22,39 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-export { DateTimeCell } from './DateTimeCell';
-export { EnumCell } from './EnumCell';
-export { NumberFormatCell } from './NumberFormatCell';
-export { TimeCell } from './TimeCell';
-export { TextCell } from './TextCell';
-export { BooleanCell } from './BooleanCell';
-export { TextAreaCell } from './TextAreaCell';
-export { IntegerCell } from './IntegerCell';
-export { DateCell } from './DateCell';
+import {
+  type CellProps,
+  isDateControl,
+  type RankedTester,
+  rankWith,
+} from '@jsonforms/core';
+import { withJsonFormsCellProps } from '@jsonforms/react';
+import { DateInput } from '@mantine/dates';
+import type { VanillaRendererProps } from '../index';
+import { withVanillaCellProps } from '../util/index';
+
+export const DateCell = (props: CellProps & VanillaRendererProps) => {
+  const { data, className, id, enabled, uischema, path, handleChange } = props;
+
+  if (props.visible === false) {
+    return null;
+  }
+
+  return (
+    <DateInput
+      className={className}
+      id={id}
+      value={data ?? null}
+      onChange={(value: string | null) => handleChange(path, value ?? undefined)}
+      disabled={!enabled}
+      autoFocus={uischema?.options?.focus}
+    />
+  );
+};
+/**
+ * Default tester for date controls.
+ * @type {RankedTester}
+ */
+export const dateCellTester: RankedTester = rankWith(2, isDateControl);
+
+export default withJsonFormsCellProps(withVanillaCellProps(DateCell));

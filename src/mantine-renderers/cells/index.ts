@@ -27,9 +27,20 @@ import EnumCell, { enumCellTester } from './EnumCell';
 import NumberFormatCell, { numberFormatCellTester } from './NumberFormatCell';
 import OneOfEnumCell, { oneOfEnumCellTester } from './OneOfEnumCell';
 import TimeCell, { timeCellTester } from './TimeCell';
+import TextCell, { textCellTester } from './TextCell';
 import * as Customizable from './CustomizableCells';
+import BooleanCell, { booleanCellTester } from './BooleanCell';
+import NumberCell, { numberCellTester } from './NumberCell';
+import TextAreaCell, { textAreaCellTester } from './TextAreaCell';
+import SliderCell, { sliderCellTester } from './SliderCell';
+import IntegerCell, { integerCellTester } from './IntegerCell';
+import DateCell, { dateCellTester } from './DateCell';
 
 export {
+  DateCell,
+  dateCellTester,
+  BooleanCell,
+  booleanCellTester,
   DateTimeCell,
   dateTimeCellTester,
   EnumCell,
@@ -40,5 +51,15 @@ export {
   oneOfEnumCellTester,
   TimeCell,
   timeCellTester,
+  TextCell,
+  textCellTester,
+  NumberCell,
+  numberCellTester,
+  TextAreaCell,
+  textAreaCellTester,
+  SliderCell,
+  sliderCellTester,
+  IntegerCell,
+  integerCellTester,
 };
 export { Customizable };

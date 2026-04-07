@@ -23,9 +23,11 @@
   THE SOFTWARE.
 */
 
-import { type RankedTester } from '@jsonforms/core';
+import { type RankedTester } from "@jsonforms/core";
 
 import {
+  BooleanCell,
+  booleanCellTester,
   DateTimeCell,
   dateTimeCellTester,
   EnumCell,
@@ -34,13 +36,27 @@ import {
   oneOfEnumCellTester,
   TimeCell,
   timeCellTester,
-} from './cells';
+  TextCell,
+  textCellTester,
+  NumberCell,
+  numberCellTester,
+  TextAreaCell,
+  textAreaCellTester,
+  SliderCell,
+  sliderCellTester,
+  IntegerCell,
+  integerCellTester,
+  DateCell,
+  dateCellTester,
+} from "./cells";
 
 import {
   BooleanControl,
   booleanControlTester,
   DateControl,
   dateControlTester,
+  EnumControl,
+  enumControlTester,
   InputControl,
   inputControlTester,
   IntegerControl,
@@ -57,7 +73,9 @@ import {
   textAreaControlTester,
   TextControl,
   textControlTester,
-} from './controls';
+  TimeControl,
+  timeControlTester,
+} from "./controls";
 
 import {
   ArrayControl,
@@ -68,7 +86,7 @@ import {
   labelRendererTester,
   TableArrayControl,
   tableArrayControlTester,
-} from './complex';
+} from "./complex";
 
 import {
   GroupLayout,
@@ -77,7 +95,7 @@ import {
   horizontalLayoutTester,
   VerticalLayout,
   verticalLayoutTester,
-} from './layouts';
+} from "./layouts";
 
 export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
   { tester: booleanControlTester, renderer: BooleanControl },
@@ -85,8 +103,10 @@ export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
   { tester: numberControlTester, renderer: NumberControl },
   { tester: integerControlTester, renderer: IntegerControl },
   { tester: dateControlTester, renderer: DateControl },
+  { tester: enumControlTester, renderer: EnumControl },
   { tester: textAreaControlTester, renderer: TextAreaControl },
   { tester: sliderControlTester, renderer: SliderControl },
+  { tester: timeControlTester, renderer: TimeControl },
   { tester: inputControlTester, renderer: InputControl },
   { tester: radioGroupControlTester, renderer: RadioGroupControl },
   { tester: oneOfRadioGroupControlTester, renderer: OneOfRadioGroupControl },
@@ -100,8 +120,15 @@ export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
 ];
 
 export const mantineCells: { tester: RankedTester; cell: any }[] = [
+  { tester: booleanCellTester, cell: BooleanCell },
   { tester: dateTimeCellTester, cell: DateTimeCell },
   { tester: enumCellTester, cell: EnumCell },
   { tester: oneOfEnumCellTester, cell: OneOfEnumCell },
   { tester: timeCellTester, cell: TimeCell },
+  { tester: textCellTester, cell: TextCell },
+  { tester: textAreaCellTester, cell: TextAreaCell },
+  { tester: numberCellTester, cell: NumberCell },
+  { tester: sliderCellTester, cell: SliderCell },
+  { tester: integerCellTester, cell: IntegerCell },
+  { tester: dateCellTester, cell: DateCell },
 ];

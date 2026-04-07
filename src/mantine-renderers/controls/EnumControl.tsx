@@ -22,29 +22,40 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import type { ControlProps, RankedTester } from '@jsonforms/core';
-import { isIntegerControl, rankWith } from '@jsonforms/core';
-import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box, NumberInput } from '@mantine/core';
-import { withVanillaControlProps } from '../util';
+import { useMemo } from 'react';
+import type { ControlProps, OwnPropsOfEnum, RankedTester } from '@jsonforms/core';
+import { isEnumControl, rankWith } from '@jsonforms/core';
+import { withJsonFormsControlProps, withJsonFormsEnumProps } from '@jsonforms/react';
+import { Box, Select } from '@mantine/core';
+import { i18nDefaults, withVanillaControlProps } from '../util';
 import type { VanillaRendererProps } from '../index';
 
-export const IntegerControl = (props: ControlProps & VanillaRendererProps) => {
+export const EnumControl = (props: ControlProps & VanillaRendererProps & OwnPropsOfEnum) => {
   const {
-    id,
     data,
+    id,
     label,
     description,
     errors,
     enabled,
     visible,
     required,
-    uischema,
     schema,
+    uischema,
     path,
     handleChange,
+    options,
     classNames,
-  } = props;
+    t,
+  } = props as any;
+
+  console.log('EnumControl props', props);
+
+
+  const noneOptionLabel = useMemo(
+    () => (typeof t === 'function' ? t('enum.none', i18nDefaults['enum.none'], { schema, uischema, path }) : i18nDefaults['enum.none']),
+    [t, schema, uischema, path]
+  );
 
   if (visible === false) {
     return null;
@@ -52,35 +63,34 @@ export const IntegerControl = (props: ControlProps & VanillaRendererProps) => {
 
   const isValid = !errors || errors.length === 0;
 
-  const handleNumberChange = (value: number | string) => {
-    if (value === '' || value === undefined) {
-      handleChange(path, undefined);
-    } else {
-      handleChange(path, Number(value));
-    }
-  };
+  console.log('EnumControl render', { data, options, label });
 
   return (
     <Box className={classNames?.wrapper}>
-      <NumberInput
+      <Select
         id={id}
         label={label}
         description={isValid ? description : undefined}
         error={!isValid ? errors : undefined}
         withAsterisk={required}
-        value={data ?? ''}
-        onChange={handleNumberChange}
+        value={data ?? null}
+        onChange={(value) => handleChange(path, value ?? undefined)}
         disabled={!enabled}
-        min={schema.minimum}
-        max={schema.maximum}
-        step={1}
-        allowDecimal={false}
+        data={[
+          { value: '', label: noneOptionLabel },
+          ...(options?.map((opt: any) => ({ value: opt.value, label: opt.label || opt.value })) ?? []),
+        ]}
+        placeholder={noneOptionLabel}
+        clearable
+        allowDeselect
         autoFocus={uischema?.options?.focus}
       />
     </Box>
   );
 };
 
-export const integerControlTester: RankedTester = rankWith(3, isIntegerControl);
+export const enumControlTester: RankedTester = rankWith(3, isEnumControl);
 
-export default withVanillaControlProps(withJsonFormsControlProps(IntegerControl));
+export default withJsonFormsEnumProps(
+  withJsonFormsControlProps(EnumControl) as any
+);

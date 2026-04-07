@@ -24,6 +24,7 @@
 */
 import BooleanControl, { booleanControlTester } from './BooleanControl';
 import DateControl, { dateControlTester } from './DateControl';
+import EnumControl, { enumControlTester } from './EnumControl';
 import InputControl, { inputControlTester } from './InputControl';
 import IntegerControl, { integerControlTester } from './IntegerControl';
 import NumberControl, { numberControlTester } from './NumberControl';
@@ -36,11 +37,14 @@ import OneOfRadioGroupControl, {
 import SliderControl, { sliderControlTester } from './SliderControl';
 import TextAreaControl, { textAreaControlTester } from './TextAreaControl';
 import TextControl, { textControlTester } from './TextControl';
+import TimeControl, { timeControlTester } from './TimeControl';
 export {
   BooleanControl,
   booleanControlTester,
   DateControl,
   dateControlTester,
+  EnumControl,
+  enumControlTester,
   InputControl,
   inputControlTester,
   IntegerControl,
@@ -57,4 +61,6 @@ export {
   textAreaControlTester,
   TextControl,
   textControlTester,
+  TimeControl,
+  timeControlTester,
 };

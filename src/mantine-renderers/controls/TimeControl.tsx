@@ -22,14 +22,28 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
+import { useRef } from 'react';
 import type { ControlProps, RankedTester } from '@jsonforms/core';
-import { isIntegerControl, rankWith } from '@jsonforms/core';
+import { isTimeControl, rankWith } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box, NumberInput } from '@mantine/core';
+import { ActionIcon, Box } from '@mantine/core';
+import { TimeInput } from '@mantine/dates';
+import { IconClock2 } from '@tabler/icons-react';
 import { withVanillaControlProps } from '../util';
 import type { VanillaRendererProps } from '../index';
 
-export const IntegerControl = (props: ControlProps & VanillaRendererProps) => {
+const appendSecondsIfNecessary = (value: unknown) => {
+  if (typeof value === 'string') {
+    const splitValue = value.split(':');
+    if (splitValue.length === 2) {
+      splitValue.push('00');
+    }
+    return splitValue.join(':');
+  }
+  return value;
+};
+
+export const TimeControl = (props: ControlProps & VanillaRendererProps) => {
   const {
     id,
     data,
@@ -40,11 +54,12 @@ export const IntegerControl = (props: ControlProps & VanillaRendererProps) => {
     visible,
     required,
     uischema,
-    schema,
     path,
     handleChange,
     classNames,
   } = props;
+
+  const ref = useRef<HTMLInputElement>(null);
 
   if (visible === false) {
     return null;
@@ -52,35 +67,35 @@ export const IntegerControl = (props: ControlProps & VanillaRendererProps) => {
 
   const isValid = !errors || errors.length === 0;
 
-  const handleNumberChange = (value: number | string) => {
-    if (value === '' || value === undefined) {
-      handleChange(path, undefined);
-    } else {
-      handleChange(path, Number(value));
-    }
-  };
-
   return (
     <Box className={classNames?.wrapper}>
-      <NumberInput
+      <TimeInput
         id={id}
         label={label}
         description={isValid ? description : undefined}
         error={!isValid ? errors : undefined}
         withAsterisk={required}
         value={data ?? ''}
-        onChange={handleNumberChange}
+        onChange={(ev) =>
+          handleChange(path, appendSecondsIfNecessary(ev.currentTarget.value))
+        }
         disabled={!enabled}
-        min={schema.minimum}
-        max={schema.maximum}
-        step={1}
-        allowDecimal={false}
         autoFocus={uischema?.options?.focus}
+        rightSection={
+          <ActionIcon
+            variant="subtle"
+            color="gray"
+            onClick={() => ref.current?.showPicker()}
+          >
+            <IconClock2 size={16} />
+          </ActionIcon>
+        }
+        ref={ref}
       />
     </Box>
   );
 };
 
-export const integerControlTester: RankedTester = rankWith(3, isIntegerControl);
+export const timeControlTester: RankedTester = rankWith(3, isTimeControl);
 
-export default withVanillaControlProps(withJsonFormsControlProps(IntegerControl));
+export default withVanillaControlProps(withJsonFormsControlProps(TimeControl));
