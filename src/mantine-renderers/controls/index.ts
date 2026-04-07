@@ -24,6 +24,7 @@
 */
 import BooleanControl, { booleanControlTester } from './BooleanControl';
 import InputControl, { inputControlTester } from './InputControl';
+import NumberControl, { numberControlTester } from './NumberControl';
 import RadioGroupControl, {
   radioGroupControlTester,
 } from './RadioGroupControl';
@@ -36,6 +37,8 @@ export {
   booleanControlTester,
   InputControl,
   inputControlTester,
+  NumberControl,
+  numberControlTester,
   RadioGroupControl,
   radioGroupControlTester,
   OneOfRadioGroupControl,

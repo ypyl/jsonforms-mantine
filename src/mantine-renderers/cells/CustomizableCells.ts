@@ -26,7 +26,6 @@ export { DateCell } from './DateCell';
 export { DateTimeCell } from './DateTimeCell';
 export { EnumCell } from './EnumCell';
 export { IntegerCell } from './IntegerCell';
-export { NumberCell } from './NumberCell';
 export { NumberFormatCell } from './NumberFormatCell';
 export { SliderCell } from './SliderCell';
 export { TextAreaCell } from './TextAreaCell';
