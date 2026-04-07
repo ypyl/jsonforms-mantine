@@ -31,7 +31,6 @@ import NumberCell, { numberCellTester } from './NumberCell';
 import NumberFormatCell, { numberFormatCellTester } from './NumberFormatCell';
 import OneOfEnumCell, { oneOfEnumCellTester } from './OneOfEnumCell';
 import SliderCell, { sliderCellTester } from './SliderCell';
-import TextCell, { textCellTester } from './TextCell';
 import TextAreaCell, { textAreaCellTester } from './TextAreaCell';
 import TimeCell, { timeCellTester } from './TimeCell';
 import * as Customizable from './CustomizableCells';
@@ -55,8 +54,6 @@ export {
   oneOfEnumCellTester,
   SliderCell,
   sliderCellTester,
-  TextCell,
-  textCellTester,
   TextAreaCell,
   textAreaCellTester,
   TimeCell,

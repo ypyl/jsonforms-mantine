@@ -44,8 +44,6 @@ import {
   sliderCellTester,
   TextAreaCell,
   textAreaCellTester,
-  TextCell,
-  textCellTester,
   TimeCell,
   timeCellTester,
 } from './cells';
@@ -108,6 +106,5 @@ export const mantineCells: { tester: RankedTester; cell: any }[] = [
   { tester: oneOfEnumCellTester, cell: OneOfEnumCell },
   { tester: sliderCellTester, cell: SliderCell },
   { tester: textAreaCellTester, cell: TextAreaCell },
-  { tester: textCellTester, cell: TextCell },
   { tester: timeCellTester, cell: TimeCell },
 ];

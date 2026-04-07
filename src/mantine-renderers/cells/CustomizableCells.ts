@@ -30,6 +30,5 @@ export { IntegerCell } from './IntegerCell';
 export { NumberCell } from './NumberCell';
 export { NumberFormatCell } from './NumberFormatCell';
 export { SliderCell } from './SliderCell';
-export { TextCell } from './TextCell';
 export { TextAreaCell } from './TextAreaCell';
 export { TimeCell } from './TimeCell';
