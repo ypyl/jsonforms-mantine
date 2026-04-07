@@ -26,8 +26,6 @@
 import { type RankedTester } from '@jsonforms/core';
 
 import {
-  BooleanCell,
-  booleanCellTester,
   DateCell,
   dateCellTester,
   DateTimeCell,
@@ -97,7 +95,6 @@ export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
 ];
 
 export const mantineCells: { tester: RankedTester; cell: any }[] = [
-  { tester: booleanCellTester, cell: BooleanCell },
   { tester: dateCellTester, cell: DateCell },
   { tester: dateTimeCellTester, cell: DateTimeCell },
   { tester: enumCellTester, cell: EnumCell },

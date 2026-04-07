@@ -22,7 +22,6 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import BooleanCell, { booleanCellTester } from './BooleanCell';
 import DateCell, { dateCellTester } from './DateCell';
 import DateTimeCell, { dateTimeCellTester } from './DateTimeCell';
 import EnumCell, { enumCellTester } from './EnumCell';
@@ -36,8 +35,6 @@ import TimeCell, { timeCellTester } from './TimeCell';
 import * as Customizable from './CustomizableCells';
 
 export {
-  BooleanCell,
-  booleanCellTester,
   DateCell,
   dateCellTester,
   DateTimeCell,
