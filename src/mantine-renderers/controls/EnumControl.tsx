@@ -49,8 +49,6 @@ export const EnumControl = (props: ControlProps & VanillaRendererProps & OwnProp
     t,
   } = props as any;
 
-  console.log('EnumControl props', props);
-
 
   const noneOptionLabel = useMemo(
     () => (typeof t === 'function' ? t('enum.none', i18nDefaults['enum.none'], { schema, uischema, path }) : i18nDefaults['enum.none']),
@@ -62,8 +60,6 @@ export const EnumControl = (props: ControlProps & VanillaRendererProps & OwnProp
   }
 
   const isValid = !errors || errors.length === 0;
-
-  console.log('EnumControl render', { data, options, label });
 
   return (
     <Box className={classNames?.wrapper}>
