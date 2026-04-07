@@ -22,7 +22,6 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-export { DateCell } from './DateCell';
 export { DateTimeCell } from './DateTimeCell';
 export { EnumCell } from './EnumCell';
 export { NumberFormatCell } from './NumberFormatCell';

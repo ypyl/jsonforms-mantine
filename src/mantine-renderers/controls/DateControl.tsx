@@ -22,39 +22,53 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import {
-  type CellProps,
-  isDateControl,
-  type RankedTester,
-  rankWith,
-} from '@jsonforms/core';
-import { withJsonFormsCellProps } from '@jsonforms/react';
+import type { ControlProps, RankedTester } from '@jsonforms/core';
+import { isDateControl, rankWith } from '@jsonforms/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { DateInput } from '@mantine/dates';
+import { Box } from '@mantine/core';
+import { withVanillaControlProps } from '../util';
 import type { VanillaRendererProps } from '../index';
-import { withVanillaCellProps } from '../util/index';
 
-export const DateCell = (props: CellProps & VanillaRendererProps) => {
-  const { data, className, id, enabled, uischema, path, handleChange } = props;
+export const DateControl = (props: ControlProps & VanillaRendererProps) => {
+  const {
+    id,
+    data,
+    label,
+    description,
+    errors,
+    enabled,
+    visible,
+    required,
+    uischema,
+    path,
+    handleChange,
+    classNames,
+  } = props;
 
-  if (props.visible === false) {
+  if (visible === false) {
     return null;
   }
 
+  const isValid = !errors || errors.length === 0;
+
   return (
-    <DateInput
-      className={className}
-      id={id}
-      value={data ?? null}
-      onChange={(value: string | null) => handleChange(path, value ?? undefined)}
-      disabled={!enabled}
-      autoFocus={uischema?.options?.focus}
-    />
+    <Box className={classNames?.wrapper}>
+      <DateInput
+        id={id}
+        label={label}
+        description={isValid ? description : undefined}
+        error={!isValid ? errors : undefined}
+        withAsterisk={required}
+        value={data ?? null}
+        onChange={(value: string | null) => handleChange(path, value ?? undefined)}
+        disabled={!enabled}
+        autoFocus={uischema?.options?.focus}
+      />
+    </Box>
   );
 };
-/**
- * Default tester for date controls.
- * @type {RankedTester}
- */
-export const dateCellTester: RankedTester = rankWith(2, isDateControl);
 
-export default withJsonFormsCellProps(withVanillaCellProps(DateCell));
+export const dateControlTester: RankedTester = rankWith(2, isDateControl);
+
+export default withVanillaControlProps(withJsonFormsControlProps(DateControl));

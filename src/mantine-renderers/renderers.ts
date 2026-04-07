@@ -26,8 +26,6 @@
 import { type RankedTester } from '@jsonforms/core';
 
 import {
-  DateCell,
-  dateCellTester,
   DateTimeCell,
   dateTimeCellTester,
   EnumCell,
@@ -41,6 +39,8 @@ import {
 import {
   BooleanControl,
   booleanControlTester,
+  DateControl,
+  dateControlTester,
   InputControl,
   inputControlTester,
   IntegerControl,
@@ -84,6 +84,7 @@ export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
   { tester: textControlTester, renderer: TextControl },
   { tester: numberControlTester, renderer: NumberControl },
   { tester: integerControlTester, renderer: IntegerControl },
+  { tester: dateControlTester, renderer: DateControl },
   { tester: textAreaControlTester, renderer: TextAreaControl },
   { tester: sliderControlTester, renderer: SliderControl },
   { tester: inputControlTester, renderer: InputControl },
@@ -99,7 +100,6 @@ export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
 ];
 
 export const mantineCells: { tester: RankedTester; cell: any }[] = [
-  { tester: dateCellTester, cell: DateCell },
   { tester: dateTimeCellTester, cell: DateTimeCell },
   { tester: enumCellTester, cell: EnumCell },
   { tester: oneOfEnumCellTester, cell: OneOfEnumCell },

@@ -23,6 +23,7 @@
   THE SOFTWARE.
 */
 import BooleanControl, { booleanControlTester } from './BooleanControl';
+import DateControl, { dateControlTester } from './DateControl';
 import InputControl, { inputControlTester } from './InputControl';
 import IntegerControl, { integerControlTester } from './IntegerControl';
 import NumberControl, { numberControlTester } from './NumberControl';
@@ -38,6 +39,8 @@ import TextControl, { textControlTester } from './TextControl';
 export {
   BooleanControl,
   booleanControlTester,
+  DateControl,
+  dateControlTester,
   InputControl,
   inputControlTester,
   IntegerControl,
