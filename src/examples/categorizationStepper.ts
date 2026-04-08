@@ -67,7 +67,7 @@ export const uischema = {
   elements: [
     {
       type: 'Category',
-      label: 'Personal Information',
+      label: 'categoryLabelKey',
       elements: [
         {
           type: 'HorizontalLayout',
@@ -185,6 +185,7 @@ export const uischema = {
   ],
   options: {
     variant: 'stepper',
+    showNavButtons: true,
   },
 };
 
