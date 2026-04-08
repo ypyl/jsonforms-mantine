@@ -10,6 +10,7 @@ import { schema as categorizationSchema, uischema as categorizationUischema, ini
 import { schema as categorizationStepperSchema, uischema as categorizationStepperUischema, initialData as categorizationStepperInitialData, type CategorizationStepperFormData } from './examples/categorizationStepper';
 import { schema as horizontalLayoutSchema, uischema as horizontalLayoutUischema, initialData as horizontalLayoutInitialData, type HorizontalLayoutFormData } from './examples/horizontalLayout';
 import { schema as verticalLayoutSchema, uischema as verticalLayoutUischema, initialData as verticalLayoutInitialData, type VerticalLayoutFormData } from './examples/verticalLayout';
+import { schema as groupLayoutSchema, uischema as groupLayoutUischema, initialData as groupLayoutInitialData, type GroupLayoutFormData } from './examples/groupLayout';
 
 function App() {
   const [basicData, setBasicData] = useState<BasicFormData>(basicInitialData);
@@ -20,6 +21,7 @@ function App() {
   const [categorizationStepperData, setCategorizationStepperData] = useState<CategorizationStepperFormData>(categorizationStepperInitialData);
   const [horizontalLayoutData, setHorizontalLayoutData] = useState<HorizontalLayoutFormData>(horizontalLayoutInitialData);
   const [verticalLayoutData, setVerticalLayoutData] = useState<VerticalLayoutFormData>(verticalLayoutInitialData);
+  const [groupLayoutData, setGroupLayoutData] = useState<GroupLayoutFormData>(groupLayoutInitialData);
 
   return (
     <Container size="sm" py="xl" fluid>
@@ -134,6 +136,7 @@ function App() {
               <Tabs.List>
                 <Tabs.Tab value="horizontalLayout">Horizontal Layout</Tabs.Tab>
                 <Tabs.Tab value="verticalLayout">Vertical Layout</Tabs.Tab>
+                <Tabs.Tab value="groupLayout">Group</Tabs.Tab>
               </Tabs.List>
               <Tabs.Panel value="horizontalLayout" pt="md">
                 <Box>
@@ -173,6 +176,26 @@ function App() {
                 <Group mt="md">
                   <Button onClick={() => setVerticalLayoutData(verticalLayoutInitialData)}>Reset</Button>
                   <Button onClick={() => setVerticalLayoutData({} as VerticalLayoutFormData)} variant="outline">Clear</Button>
+                </Group>
+              </Tabs.Panel>
+              <Tabs.Panel value="groupLayout" pt="md">
+                <Box>
+                  <JsonForms
+                    schema={groupLayoutSchema}
+                    uischema={groupLayoutUischema}
+                    data={groupLayoutData}
+                    renderers={mantineRenderers}
+                    cells={mantineCells}
+                    onChange={({ data }) => setGroupLayoutData(data)}
+                  />
+                </Box>
+                <Box mt="md">
+                  <Title order={4}>Current Data</Title>
+                  <pre>{JSON.stringify(groupLayoutData, null, 2)}</pre>
+                </Box>
+                <Group mt="md">
+                  <Button onClick={() => setGroupLayoutData(groupLayoutInitialData)}>Reset</Button>
+                  <Button onClick={() => setGroupLayoutData({} as GroupLayoutFormData)} variant="outline">Clear</Button>
                 </Group>
               </Tabs.Panel>
             </Tabs>

@@ -22,7 +22,6 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import isEmpty from 'lodash/isEmpty';
 import React, { type FunctionComponent } from 'react';
 import {
   type GroupLayout,
@@ -32,6 +31,7 @@ import {
   uiTypeIs,
 } from '@jsonforms/core';
 import { withJsonFormsLayoutProps } from '@jsonforms/react';
+import { Fieldset } from '@mantine/core';
 import { renderChildren } from './util';
 import type { VanillaRendererProps } from '../index';
 import { withVanillaControlProps } from '../util';
@@ -61,27 +61,19 @@ const GroupLayoutRendererComponent: FunctionComponent<
   visible,
   label,
   getStyle,
-  getStyleAsClassName,
 }: LayoutProps & VanillaRendererProps) {
   const group = uischema as GroupLayout;
   const elementsSize = group.elements ? group.elements.length : 0;
-  const classNames = getStyleAsClassName('group.layout');
   const childClassNames = ['group-layout-item']
     .concat(getStyle('group.layout.item', elementsSize))
     .join(' ');
 
+  if (visible === false) return null;
+
   return (
-    <fieldset
-      className={classNames}
-      hidden={visible === undefined || visible === null ? false : !visible}
-    >
-      {!isEmpty(label) ? (
-        <legend className={getStyleAsClassName('group.label')}>{label}</legend>
-      ) : (
-        ''
-      )}
+    <Fieldset legend={label} variant="default" radius="md">
       {renderChildren(group, schema, childClassNames, path, enabled)}
-    </fieldset>
+    </Fieldset>
   );
 });
 
