@@ -29,7 +29,7 @@ import {
   withJsonFormsLayoutProps,
   withTranslateProps,
 } from '@jsonforms/react';
-import { Tabs } from '@mantine/core';
+import { Stepper, Tabs } from '@mantine/core';
 import { isCategorization } from './tester';
 import { SingleCategory } from './SingleCategory';
 import { withAjvProps, withVanillaControlProps } from '../../util';
@@ -96,6 +96,33 @@ export const CategorizationRenderer = ({
   };
 
   if (visible === false) return null;
+
+  const isStepperVariant = categorization.options?.variant === 'stepper';
+
+  if (isStepperVariant) {
+    return (
+      <Stepper
+        active={safeCategoryIndex}
+        onStepChange={handleTabChange}
+        className={getStyleAsClassName('categorization')}
+      >
+        {visibleElements.map((element, idx) => {
+          const label = deriveLabelForUISchemaElement(element, t);
+          return (
+            <Stepper.Step key={idx} label={label}>
+              {element && !isCategorization(element) ? (
+                <SingleCategory
+                  category={element as Category}
+                  schema={schema}
+                  path={path}
+                />
+              ) : null}
+            </Stepper.Step>
+          );
+        })}
+      </Stepper>
+    );
+  }
 
   return (
     <Tabs

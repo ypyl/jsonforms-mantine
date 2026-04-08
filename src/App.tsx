@@ -7,6 +7,7 @@ import { schema as complexSchema, uischema as complexUischema, initialData as co
 import { schema as allTypesSchema, uischema as allTypesUischema, initialData as allTypesInitialData, type AllTypesFormData } from './examples/allTypes';
 import { schema as optionsSchema, uischema as optionsUischema, initialData as optionsInitialData, type OptionsFormData } from './examples/options';
 import { schema as categorizationSchema, uischema as categorizationUischema, initialData as categorizationInitialData, type CategorizationFormData } from './examples/categorization';
+import { schema as categorizationStepperSchema, uischema as categorizationStepperUischema, initialData as categorizationStepperInitialData, type CategorizationStepperFormData } from './examples/categorizationStepper';
 
 function App() {
   const [basicData, setBasicData] = useState<BasicFormData>(basicInitialData);
@@ -14,6 +15,7 @@ function App() {
   const [allTypesData, setAllTypesData] = useState<AllTypesFormData>(allTypesInitialData);
   const [optionsData, setOptionsData] = useState<OptionsFormData>(optionsInitialData);
   const [categorizationData, setCategorizationData] = useState<CategorizationFormData>(categorizationInitialData);
+  const [categorizationStepperData, setCategorizationStepperData] = useState<CategorizationStepperFormData>(categorizationStepperInitialData);
 
   return (
     <Container size="sm" py="xl" fluid>
@@ -75,24 +77,52 @@ function App() {
             </Tabs>
           </Tabs.Panel>
           <Tabs.Panel value="categorization" pt="md">
-            <Box>
-              <JsonForms
-                schema={categorizationSchema}
-                uischema={categorizationUischema}
-                data={categorizationData}
-                renderers={mantineRenderers}
-                cells={mantineCells}
-                onChange={({ data }) => setCategorizationData(data)}
-              />
-            </Box>
-            <Box mt="md">
-              <Title order={4}>Current Data</Title>
-              <pre>{JSON.stringify(categorizationData, null, 2)}</pre>
-            </Box>
-            <Group mt="md">
-              <Button onClick={() => setCategorizationData(categorizationInitialData)}>Reset</Button>
-              <Button onClick={() => setCategorizationData({} as CategorizationFormData)} variant="outline">Clear</Button>
-            </Group>
+            <Tabs variant='pills' defaultValue="default">
+              <Tabs.List>
+                <Tabs.Tab value="default">Default Tabs</Tabs.Tab>
+                <Tabs.Tab value="stepper">Stepper Variant</Tabs.Tab>
+              </Tabs.List>
+              <Tabs.Panel value="default" pt="md">
+                <Box>
+                  <JsonForms
+                    schema={categorizationSchema}
+                    uischema={categorizationUischema}
+                    data={categorizationData}
+                    renderers={mantineRenderers}
+                    cells={mantineCells}
+                    onChange={({ data }) => setCategorizationData(data)}
+                  />
+                </Box>
+                <Box mt="md">
+                  <Title order={4}>Current Data</Title>
+                  <pre>{JSON.stringify(categorizationData, null, 2)}</pre>
+                </Box>
+                <Group mt="md">
+                  <Button onClick={() => setCategorizationData(categorizationInitialData)}>Reset</Button>
+                  <Button onClick={() => setCategorizationData({} as CategorizationFormData)} variant="outline">Clear</Button>
+                </Group>
+              </Tabs.Panel>
+              <Tabs.Panel value="stepper" pt="md">
+                <Box>
+                  <JsonForms
+                    schema={categorizationStepperSchema}
+                    uischema={categorizationStepperUischema}
+                    data={categorizationStepperData}
+                    renderers={mantineRenderers}
+                    cells={mantineCells}
+                    onChange={({ data }) => setCategorizationStepperData(data)}
+                  />
+                </Box>
+                <Box mt="md">
+                  <Title order={4}>Current Data</Title>
+                  <pre>{JSON.stringify(categorizationStepperData, null, 2)}</pre>
+                </Box>
+                <Group mt="md">
+                  <Button onClick={() => setCategorizationStepperData(categorizationStepperInitialData)}>Reset</Button>
+                  <Button onClick={() => setCategorizationStepperData({} as CategorizationStepperFormData)} variant="outline">Clear</Button>
+                </Group>
+              </Tabs.Panel>
+            </Tabs>
           </Tabs.Panel>
           <Tabs.Panel value="complex" pt="md">
             <Box>
