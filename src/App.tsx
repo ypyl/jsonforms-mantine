@@ -11,6 +11,7 @@ import { schema as categorizationStepperSchema, uischema as categorizationSteppe
 import { schema as horizontalLayoutSchema, uischema as horizontalLayoutUischema, initialData as horizontalLayoutInitialData, type HorizontalLayoutFormData } from './examples/horizontalLayout';
 import { schema as verticalLayoutSchema, uischema as verticalLayoutUischema, initialData as verticalLayoutInitialData, type VerticalLayoutFormData } from './examples/verticalLayout';
 import { schema as groupLayoutSchema, uischema as groupLayoutUischema, initialData as groupLayoutInitialData, type GroupLayoutFormData } from './examples/groupLayout';
+import { schema as nestedLayoutSchema, uischema as nestedLayoutUischema, initialData as nestedLayoutInitialData, type NestedLayoutFormData } from './examples/nestedLayout';
 
 function App() {
   const [basicData, setBasicData] = useState<BasicFormData>(basicInitialData);
@@ -22,6 +23,7 @@ function App() {
   const [horizontalLayoutData, setHorizontalLayoutData] = useState<HorizontalLayoutFormData>(horizontalLayoutInitialData);
   const [verticalLayoutData, setVerticalLayoutData] = useState<VerticalLayoutFormData>(verticalLayoutInitialData);
   const [groupLayoutData, setGroupLayoutData] = useState<GroupLayoutFormData>(groupLayoutInitialData);
+  const [nestedLayoutData, setNestedLayoutData] = useState<NestedLayoutFormData>(nestedLayoutInitialData);
 
   return (
     <Container size="sm" py="xl" fluid>
@@ -137,6 +139,7 @@ function App() {
                 <Tabs.Tab value="horizontalLayout">Horizontal Layout</Tabs.Tab>
                 <Tabs.Tab value="verticalLayout">Vertical Layout</Tabs.Tab>
                 <Tabs.Tab value="groupLayout">Group</Tabs.Tab>
+                <Tabs.Tab value="nestedLayout">Nested Layout</Tabs.Tab>
               </Tabs.List>
               <Tabs.Panel value="horizontalLayout" pt="md">
                 <Box>
@@ -196,6 +199,26 @@ function App() {
                 <Group mt="md">
                   <Button onClick={() => setGroupLayoutData(groupLayoutInitialData)}>Reset</Button>
                   <Button onClick={() => setGroupLayoutData({} as GroupLayoutFormData)} variant="outline">Clear</Button>
+                </Group>
+              </Tabs.Panel>
+              <Tabs.Panel value="nestedLayout" pt="md">
+                <Box>
+                  <JsonForms
+                    schema={nestedLayoutSchema}
+                    uischema={nestedLayoutUischema}
+                    data={nestedLayoutData}
+                    renderers={mantineRenderers}
+                    cells={mantineCells}
+                    onChange={({ data }) => setNestedLayoutData(data)}
+                  />
+                </Box>
+                <Box mt="md">
+                  <Title order={4}>Current Data</Title>
+                  <pre>{JSON.stringify(nestedLayoutData, null, 2)}</pre>
+                </Box>
+                <Group mt="md">
+                  <Button onClick={() => setNestedLayoutData(nestedLayoutInitialData)}>Reset</Button>
+                  <Button onClick={() => setNestedLayoutData({} as NestedLayoutFormData)} variant="outline">Clear</Button>
                 </Group>
               </Tabs.Panel>
             </Tabs>
