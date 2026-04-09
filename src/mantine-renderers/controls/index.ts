@@ -40,6 +40,7 @@ import TextAreaControl, { textAreaControlTester } from './TextAreaControl';
 import TextControl, { textControlTester } from './TextControl';
 import TimeControl, { timeControlTester } from './TimeControl';
 import AutocompleteControl, { autocompleteControlTester } from './AutocompleteControl';
+import AutocompleteOneOfControl, { autocompleteOneOfControlTester } from './AutocompleteOneOfControl';
 export {
   BooleanControl,
   booleanControlTester,
@@ -69,4 +70,6 @@ export {
   timeControlTester,
   AutocompleteControl,
   autocompleteControlTester,
+  AutocompleteOneOfControl,
+  autocompleteOneOfControlTester,
 };
