@@ -12,6 +12,7 @@ import { schema as horizontalLayoutSchema, uischema as horizontalLayoutUischema,
 import { schema as verticalLayoutSchema, uischema as verticalLayoutUischema, initialData as verticalLayoutInitialData, type VerticalLayoutFormData } from './examples/verticalLayout';
 import { schema as groupLayoutSchema, uischema as groupLayoutUischema, initialData as groupLayoutInitialData, type GroupLayoutFormData } from './examples/groupLayout';
 import { schema as nestedLayoutSchema, uischema as nestedLayoutUischema, initialData as nestedLayoutInitialData, type NestedLayoutFormData } from './examples/nestedLayout';
+import { schema as tableArraySchema, uischema as tableArrayUischema, initialData as tableArrayInitialData, type TableArrayFormData } from './examples/tableArray';
 
 function App() {
   const [basicData, setBasicData] = useState<BasicFormData>(basicInitialData);
@@ -24,6 +25,7 @@ function App() {
   const [verticalLayoutData, setVerticalLayoutData] = useState<VerticalLayoutFormData>(verticalLayoutInitialData);
   const [groupLayoutData, setGroupLayoutData] = useState<GroupLayoutFormData>(groupLayoutInitialData);
   const [nestedLayoutData, setNestedLayoutData] = useState<NestedLayoutFormData>(nestedLayoutInitialData);
+  const [tableArrayData, setTableArrayData] = useState<TableArrayFormData>(tableArrayInitialData);
 
   return (
     <Container size="sm" py="xl" fluid>
@@ -35,6 +37,7 @@ function App() {
             <Tabs.Tab value="controls">Controls</Tabs.Tab>
             <Tabs.Tab value="categorization">Categorization Example</Tabs.Tab>
             <Tabs.Tab value="layout">Layout Example</Tabs.Tab>
+            <Tabs.Tab value="array">Array Example</Tabs.Tab>
             <Tabs.Tab value="complex">Complex Example</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="controls" pt="md">
@@ -222,6 +225,26 @@ function App() {
                 </Group>
               </Tabs.Panel>
             </Tabs>
+          </Tabs.Panel>
+          <Tabs.Panel value="array" pt="md">
+            <Box>
+              <JsonForms
+                schema={tableArraySchema}
+                uischema={tableArrayUischema}
+                data={tableArrayData}
+                renderers={mantineRenderers}
+                cells={mantineCells}
+                onChange={({ data }) => setTableArrayData(data)}
+              />
+            </Box>
+            <Box mt="md">
+              <Title order={4}>Current Data</Title>
+              <pre>{JSON.stringify(tableArrayData, null, 2)}</pre>
+            </Box>
+            <Group mt="md">
+              <Button onClick={() => setTableArrayData(tableArrayInitialData)}>Reset</Button>
+              <Button onClick={() => setTableArrayData({} as TableArrayFormData)} variant="outline">Clear</Button>
+            </Group>
           </Tabs.Panel>
           <Tabs.Panel value="complex" pt="md">
             <Box>
