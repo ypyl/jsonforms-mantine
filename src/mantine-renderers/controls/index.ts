@@ -39,6 +39,7 @@ import SliderControl, { sliderControlTester } from './SliderControl';
 import TextAreaControl, { textAreaControlTester } from './TextAreaControl';
 import TextControl, { textControlTester } from './TextControl';
 import TimeControl, { timeControlTester } from './TimeControl';
+import AutocompleteEnumControl, { autocompleteEnumControlTester } from './AutocompleteEnumControl';
 export {
   BooleanControl,
   booleanControlTester,
@@ -66,4 +67,6 @@ export {
   textControlTester,
   TimeControl,
   timeControlTester,
+  AutocompleteEnumControl,
+  autocompleteEnumControlTester,
 };

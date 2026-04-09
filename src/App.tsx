@@ -13,6 +13,7 @@ import { schema as verticalLayoutSchema, uischema as verticalLayoutUischema, ini
 import { schema as groupLayoutSchema, uischema as groupLayoutUischema, initialData as groupLayoutInitialData, type GroupLayoutFormData } from './examples/groupLayout';
 import { schema as nestedLayoutSchema, uischema as nestedLayoutUischema, initialData as nestedLayoutInitialData, type NestedLayoutFormData } from './examples/nestedLayout';
 import { schema as tableArraySchema, uischema as tableArrayUischema, initialData as tableArrayInitialData, type TableArrayFormData } from './examples/tableArray';
+import { schema as autocompleteEnumSchema, uischema as autocompleteEnumUischema, initialData as autocompleteEnumInitialData, type AutocompleteEnumFormData } from './examples/autocompleteEnum';
 
 function App() {
   const [basicData, setBasicData] = useState<BasicFormData>(basicInitialData);
@@ -26,6 +27,7 @@ function App() {
   const [groupLayoutData, setGroupLayoutData] = useState<GroupLayoutFormData>(groupLayoutInitialData);
   const [nestedLayoutData, setNestedLayoutData] = useState<NestedLayoutFormData>(nestedLayoutInitialData);
   const [tableArrayData, setTableArrayData] = useState<TableArrayFormData>(tableArrayInitialData);
+  const [autocompleteEnumData, setAutocompleteEnumData] = useState<AutocompleteEnumFormData>(autocompleteEnumInitialData);
 
   return (
     <Container size="sm" py="xl" fluid>
@@ -39,6 +41,7 @@ function App() {
             <Tabs.Tab value="layout">Layout Example</Tabs.Tab>
             <Tabs.Tab value="array">Array Example</Tabs.Tab>
             <Tabs.Tab value="complex">Complex Example</Tabs.Tab>
+            <Tabs.Tab value="autocomplete">Autocomplete Renderer Example</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="controls" pt="md">
             <Tabs variant='pills' defaultValue="allTypes">
@@ -285,6 +288,33 @@ function App() {
               <Button onClick={() => setBasicData(basicInitialData)}>Reset</Button>
               <Button onClick={() => setBasicData({} as BasicFormData)} variant="outline">Clear</Button>
             </Group>
+          </Tabs.Panel>
+          <Tabs.Panel value="autocomplete" pt="md">
+            <Tabs variant='pills' defaultValue="enum">
+              <Tabs.List>
+                <Tabs.Tab value="enum">Enum</Tabs.Tab>
+              </Tabs.List>
+              <Tabs.Panel value="enum" pt="md">
+                <Box>
+                  <JsonForms
+                    schema={autocompleteEnumSchema}
+                    uischema={autocompleteEnumUischema}
+                    data={autocompleteEnumData}
+                    renderers={mantineRenderers}
+                    cells={mantineCells}
+                    onChange={({ data }) => setAutocompleteEnumData(data)}
+                  />
+                </Box>
+                <Box mt="md">
+                  <Title order={4}>Current Data</Title>
+                  <pre>{JSON.stringify(autocompleteEnumData, null, 2)}</pre>
+                </Box>
+                <Group mt="md">
+                  <Button onClick={() => setAutocompleteEnumData(autocompleteEnumInitialData)}>Reset</Button>
+                  <Button onClick={() => setAutocompleteEnumData({} as AutocompleteEnumFormData)} variant="outline">Clear</Button>
+                </Group>
+              </Tabs.Panel>
+            </Tabs>
           </Tabs.Panel>
         </Tabs>
       </Stack>
