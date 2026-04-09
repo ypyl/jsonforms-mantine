@@ -23,13 +23,13 @@
   THE SOFTWARE.
 */
 import type { ControlProps, OwnPropsOfEnum, RankedTester } from '@jsonforms/core';
-import { and, isEnumControl, rankWith, uiTypeIs } from '@jsonforms/core';
+import { and, isEnumControl, isOneOfEnumControl, or, rankWith } from '@jsonforms/core';
 import { withJsonFormsControlProps, withJsonFormsEnumProps } from '@jsonforms/react';
 import { Autocomplete } from '@mantine/core';
 import { i18nDefaults, withVanillaControlProps } from '../util';
 import type { VanillaRendererProps } from '../index';
 
-export const AutocompleteEnumControl = (props: ControlProps & VanillaRendererProps & OwnPropsOfEnum) => {
+export const AutocompleteControl = (props: ControlProps & VanillaRendererProps & OwnPropsOfEnum) => {
   const {
     data,
     id,
@@ -70,14 +70,14 @@ export const AutocompleteEnumControl = (props: ControlProps & VanillaRendererPro
   );
 };
 
-export const autocompleteEnumControlTester: RankedTester = rankWith(
+export const autocompleteControlTester: RankedTester = rankWith(
   4,
   and(
-    isEnumControl,
+    or(isEnumControl, isOneOfEnumControl),
     (uischema: any) => uischema?.options?.autocomplete === true
   )
 );
 
 export default withJsonFormsEnumProps(
-  withJsonFormsControlProps(AutocompleteEnumControl) as any
+  withJsonFormsControlProps(AutocompleteControl) as any
 );

@@ -77,8 +77,8 @@ import {
   textControlTester,
   TimeControl,
   timeControlTester,
-  AutocompleteEnumControl,
-  autocompleteEnumControlTester,
+  AutocompleteControl,
+  autocompleteControlTester,
 } from "./controls";
 
 import {
@@ -108,7 +108,7 @@ export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
   { tester: integerControlTester, renderer: IntegerControl },
   { tester: dateControlTester, renderer: DateControl },
   { tester: dateTimeControlTester, renderer: DateTimeControl },
-  { tester: autocompleteEnumControlTester, renderer: AutocompleteEnumControl },
+  { tester: autocompleteControlTester, renderer: AutocompleteControl },
   { tester: enumControlTester, renderer: EnumControl },
   { tester: textAreaControlTester, renderer: TextAreaControl },
   { tester: sliderControlTester, renderer: SliderControl },
